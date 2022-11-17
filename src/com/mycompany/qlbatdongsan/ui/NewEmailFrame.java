@@ -46,8 +46,7 @@ public class NewEmailFrame extends javax.swing.JFrame {
             message.setFrom(new InternetAddress(user));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
             message.setSubject(sub);
-            message.setContent(msg,"text/html");
-            
+            message.setContent(msg,"text/html");           
             Transport.send(message);
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,7 +56,7 @@ public class NewEmailFrame extends javax.swing.JFrame {
         String subject = txtTieuDe.getText();
         String message = txaNoiDung.getText();
         for (int i = 0; i < tblNguoiNhan.getRowCount(); i++) {
-             if (Boolean.valueOf(tblNguoiNhan.getValueAt(i, 3).toString())==true){
+            if (Boolean.valueOf(tblNguoiNhan.getValueAt(i, 3).toString())==true){
                  send(tblNguoiNhan.getValueAt(i, 2).toString(), subject, message, txtEmailCaNhan.getText(), new String(txtPass.getPassword()));
             }
         }      
