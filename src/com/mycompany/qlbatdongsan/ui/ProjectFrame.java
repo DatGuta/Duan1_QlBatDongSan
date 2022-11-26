@@ -4,44 +4,97 @@
  */
 package com.mycompany.qlbatdongsan.ui;
 
+import com.mycompany.qlbatdongsan.DAO.LichThanhToanDAO;
+import com.mycompany.qlbatdongsan.DAO.QuanLyDuAnDAO;
+import com.mycompany.qlbatdongsan.utils.MsgBox;
+import com.mycompany.qlbatdongsan.Entity.LichSuThanhToan;
+import com.mycompany.qlbatdongsan.Entity.QuanLyDuAn;
+import java.awt.Event;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
+import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
  * @author HO VAN DAT
  */
 public class ProjectFrame extends javax.swing.JPanel {
+
     DefaultTableModel model;
-    /**
-     * Creates new form ProjectFrame
-     */
+    static QuanLyDuAnDAO daoDA = new QuanLyDuAnDAO();
+    int row = -1;
+    static String SearchText = "";
+
     public ProjectFrame() {
         initComponents();
         initTableProject();
-        initTableLịchTTDK();
-        initTableCSBH();
+        fillTableDA();
     }
-    private void initTableProject(){
-        model= new DefaultTableModel();
-        Object[] column={"Mã dự án","Tên dự án","Địa chỉ","Diện tích","Số giấy phép","Ngày cấp","Nơi cấp","Loaị DA","NV Phụ trách","Ngày đăng"};
-        model.setColumnIdentifiers(column);
-        model.setRowCount(0);     
-        tblProject.setModel(model);
-    }
-    private void initTableLịchTTDK(){
-        model= new DefaultTableModel();
-        Object[] column={"Đợt","Ngày TT","K/C","Option","Tỷ lệ TT","Tỷ lệ VAT","Số tiền","Diễn giải"};
-        model.setColumnIdentifiers(column);
-        model.setRowCount(0);     
-        tblLichThanhToanDK.setModel(model);
-    }
-    private void initTableCSBH() {
-        model = new DefaultTableModel();
-        Object[] column = {"Số hiệu", "Ngày BĐ", "Ngày KT", "Loại chính sách", "Số lượng", "Điều kiện", "Chiết suất/Lãi suất", "Tiền thưởng/Phạt", "Diễn giải"};
+
+    public void initTableProject() {
+        model = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int i, int j) {
+                return false;
+            }
+        };
+        Object[] column = {"Mã dự án", "Tên dự án", "Địa chỉ", "Diện tích", "Số giấy phép", "Ngày cấp", "Nơi cấp", "Loaị DA", "Ngày đăng"};
         model.setColumnIdentifiers(column);
         model.setRowCount(0);
-        tblCSBH.setModel(model);
+
+        tblProject.setModel(model);
     }
+
+    static void fillTableDA() {
+        DefaultTableModel model = (DefaultTableModel) tblProject.getModel();
+        model.setRowCount(0);
+        try {
+            List<QuanLyDuAn> list = daoDA.selectAll();
+            for (QuanLyDuAn da : list) {
+                Object[] row = {
+                    da.getMaDA(),
+                    da.getTenDA(),
+                    da.getDiaChi(),
+                    da.getDienTich(),
+                    da.getSoGiayPhep(),
+                    da.getNgayCap(),
+                    da.getNoiCap(),
+                    da.getLoaiDA(),
+                    da.getNgayDang()
+                };
+                model.addRow(row);
+            }
+        } catch (Exception e) {
+            System.out.println("Lỗi truy vấn dữ liệu!");
+        }
+    }
+
+    void edit() {
+        QuanLyDuAn da = daoDA.selectById(tblProject.getValueAt(row, 0).toString());
+        SeeProjectFrame manengerProjectFrame = new SeeProjectFrame(da);
+        manengerProjectFrame.setVisible(true);
+    }
+
+    public static void Search(String str) {
+        if (str.length() > 0) {
+            if (tblProject != null) {
+                DefaultTableModel model = (DefaultTableModel) tblProject.getModel();
+                TableRowSorter<DefaultTableModel> trs = new TableRowSorter<>(model);
+                tblProject.setRowSorter(trs);
+                trs.setRowFilter(RowFilter.regexFilter(str));
+            } else {
+                return;
+            }
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -51,121 +104,58 @@ public class ProjectFrame extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblProject = new javax.swing.JTable();
-        tabs = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tblLichThanhToanDK = new javax.swing.JTable();
-        jPanel2 = new javax.swing.JPanel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        tblCSBH = new javax.swing.JTable();
-        jPanel3 = new javax.swing.JPanel();
-        jButton5 = new javax.swing.JButton();
+        tblProject = new javax.swing.JTable();
+        btnAddProject = new com.mycompany.qlbatdongsan.utils.PanelRound();
+        lblAddProject = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
-        jButton1.setText("Thêm");
+        jLabel1.setFont(new java.awt.Font("Serif", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel1.setText("DỰ ÁN");
 
-        jButton2.setText("Sửa");
-
-        jButton3.setText("Lịch thanh toán");
-
-        jButton4.setText("Xóa");
-
-        tblProject.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+        tblProject.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        tblProject.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblProjectMouseClicked(evt);
             }
-        ));
-        jScrollPane1.setViewportView(tblProject);
-
-        tblLichThanhToanDK.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tblProjectMousePressed(evt);
             }
-        ));
-        jScrollPane2.setViewportView(tblLichThanhToanDK);
+        });
+        jScrollPane2.setViewportView(tblProject);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1281, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 10, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
+        btnAddProject.setRoundBottonLeft(30);
+        btnAddProject.setRoundBottonRight(30);
+        btnAddProject.setRoundTopLeft(30);
+        btnAddProject.setRoundTopRight(30);
 
-        tabs.addTab("Lịch thanh toán dự kiến", jPanel1);
-
-        tblCSBH.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+        lblAddProject.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblAddProject.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/qlbatdongsan/images/icon/icons8-add-new-64.png"))); // NOI18N
+        lblAddProject.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblAddProjectMouseClicked(evt);
             }
-        ));
-        jScrollPane3.setViewportView(tblCSBH);
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lblAddProjectMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lblAddProjectMouseExited(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 1281, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
+        javax.swing.GroupLayout btnAddProjectLayout = new javax.swing.GroupLayout(btnAddProject);
+        btnAddProject.setLayout(btnAddProjectLayout);
+        btnAddProjectLayout.setHorizontalGroup(
+            btnAddProjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblAddProject, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(0, 10, Short.MAX_VALUE)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+        btnAddProjectLayout.setVerticalGroup(
+            btnAddProjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblAddProject, javax.swing.GroupLayout.PREFERRED_SIZE, 58, Short.MAX_VALUE)
         );
-
-        tabs.addTab("Chính sách bán hàng", jPanel2);
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1316, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 121, Short.MAX_VALUE)
-        );
-
-        tabs.addTab("Biểu mẫu", jPanel3);
-
-        jButton5.setText("Biểu mẫu");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -174,58 +164,80 @@ public class ProjectFrame extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(41, 41, 41)
-                        .addComponent(jButton1)
-                        .addGap(43, 43, 43)
-                        .addComponent(jButton2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton3)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton5)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addGap(35, 35, 35)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(tabs))))
-                .addContainerGap())
+                            .addComponent(jLabel1)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1244, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(553, 553, 553)
+                        .addComponent(btnAddProject, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(35, 35, 35))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4)
-                    .addComponent(jButton2)
-                    .addComponent(jButton1)
-                    .addComponent(jButton5))
-                .addGap(17, 17, 17)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 485, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(tabs)
-                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 569, Short.MAX_VALUE)
+                .addGap(44, 44, 44)
+                .addComponent(btnAddProject, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(44, 44, 44))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void tblProjectMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProjectMousePressed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_tblProjectMousePressed
+
+    private void tblProjectMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProjectMouseClicked
+
+        if (evt.getClickCount() == 2) {
+            this.row = tblProject.rowAtPoint(evt.getPoint());
+            edit();
+        }
+    }//GEN-LAST:event_tblProjectMouseClicked
+
+    private void btnAddProjectMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddProjectMouseEntered
+        // TODO add your handling code here:
+       
+    }//GEN-LAST:event_btnAddProjectMouseEntered
+
+    private void btnAddProjectMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddProjectMouseExited
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_btnAddProjectMouseExited
+
+    private void btnAddProjectMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddProjectMouseClicked
+        // TODO add your handling code here:
+       
+    }//GEN-LAST:event_btnAddProjectMouseClicked
+
+    private void lblAddProjectMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddProjectMouseClicked
+        // TODO add your handling code here:
+        AddProjectFrame addProjectFrame = new AddProjectFrame();
+        addProjectFrame.setVisible(true);
+    }//GEN-LAST:event_lblAddProjectMouseClicked
+
+    private void lblAddProjectMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddProjectMouseEntered
+        // TODO add your handling code here:
+         btnAddProject.setBounds(btnAddProject.getX() - 5, btnAddProject.getY() - 5, btnAddProject.getWidth() + 10, btnAddProject.getHeight() + 10);
+        lblAddProject.setBounds(lblAddProject.getX(), lblAddProject.getY(), lblAddProject.getWidth() + 10, lblAddProject.getHeight() + 10);
+    }//GEN-LAST:event_lblAddProjectMouseEntered
+
+    private void lblAddProjectMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddProjectMouseExited
+        // TODO add your handling code here:
+        btnAddProject.setBounds(btnAddProject.getX() + 5, btnAddProject.getY() + 5, btnAddProject.getWidth() - 10, btnAddProject.getHeight() - 10);
+        lblAddProject.setBounds(lblAddProject.getX(), lblAddProject.getY(), lblAddProject.getWidth() - 10, lblAddProject.getHeight() - 10);
+    }//GEN-LAST:event_lblAddProjectMouseExited
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JScrollPane jScrollPane1;
+    private com.mycompany.qlbatdongsan.utils.PanelRound btnAddProject;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTabbedPane tabs;
-    private javax.swing.JTable tblCSBH;
-    private javax.swing.JTable tblLichThanhToanDK;
-    private javax.swing.JTable tblProject;
+    private javax.swing.JLabel lblAddProject;
+    private static javax.swing.JTable tblProject;
     // End of variables declaration//GEN-END:variables
 }

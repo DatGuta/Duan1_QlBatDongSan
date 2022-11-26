@@ -4,14 +4,18 @@
  */
 package com.mycompany.qlbatdongsan.ui;
 
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
  * @author HO VAN DAT
  */
 public class StaffFrame extends javax.swing.JPanel {
+
     DefaultTableModel model;
+
     /**
      * Creates new form StaffFrame
      */
@@ -20,20 +24,36 @@ public class StaffFrame extends javax.swing.JPanel {
         initTableGuiSMS();
         initTableNhanVien();
     }
-     private void initTableNhanVien() {
+
+    private void initTableNhanVien() {
         model = new DefaultTableModel();
-        Object[] column = {"Mã số","Họ và tên","Ngày sinh","Điện thoại","Số nội bộ","Chức danh","Sàn giao dịch","Quản lý","Clock"};
+        Object[] column = {"Mã số", "Họ và tên", "Ngày sinh", "Điện thoại", "Số nội bộ", "Chức danh", "Sàn giao dịch", "Quản lý", "Clock"};
         model.setColumnIdentifiers(column);
         model.setRowCount(0);
         tblNhanVien.setModel(model);
     }
+
     private void initTableGuiSMS() {
         model = new DefaultTableModel();
-        Object[] column = {"STT","Tên việc","Tên thương hiệu","Thời điểm","Người tạo","Người cập nhật","Người gữi","Kích hoạt"};
+        Object[] column = {"STT", "Tên việc", "Tên thương hiệu", "Thời điểm", "Người tạo", "Người cập nhật", "Người gữi", "Kích hoạt"};
         model.setColumnIdentifiers(column);
         model.setRowCount(0);
         tblNhanVien.setModel(model);
     }
+
+    public static void Search(String str) {
+        if (str.length() > 0) {
+            if (tblNhanVien!=null) {
+                DefaultTableModel model = (DefaultTableModel) tblNhanVien.getModel();
+                TableRowSorter<DefaultTableModel> trs = new TableRowSorter<>(model);
+                tblNhanVien.setRowSorter(trs);
+                trs.setRowFilter(RowFilter.regexFilter(str));
+            }else{
+                return;
+            }
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -45,15 +65,8 @@ public class StaffFrame extends javax.swing.JPanel {
 
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblNhanVien = new javax.swing.JTable();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
@@ -62,6 +75,7 @@ public class StaffFrame extends javax.swing.JPanel {
         jButton12 = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblGuiSMS = new javax.swing.JTable();
+        jLabel2 = new javax.swing.JLabel();
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -78,14 +92,6 @@ public class StaffFrame extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(255, 255, 255));
 
-        jButton2.setText("Import");
-
-        jButton3.setText("Khóa");
-
-        jButton4.setText("Reset Password");
-
-        jButton5.setText("Mở khóa");
-
         tblNhanVien.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -98,12 +104,6 @@ public class StaffFrame extends javax.swing.JPanel {
             }
         ));
         jScrollPane1.setViewportView(tblNhanVien);
-
-        jButton6.setText("Sửa");
-
-        jButton7.setText("Thêm");
-
-        jButton8.setText("Xóa");
 
         jLabel1.setText("Tạo việc  gữi SMS");
 
@@ -130,28 +130,16 @@ public class StaffFrame extends javax.swing.JPanel {
         ));
         jScrollPane3.setViewportView(tblGuiSMS);
 
+        jLabel2.setFont(new java.awt.Font("Serif", 1, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel2.setText("NHÂN VIÊN");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(68, 68, 68)
-                        .addComponent(jButton7)
-                        .addGap(39, 39, 39)
-                        .addComponent(jButton6)
-                        .addGap(26, 26, 26)
-                        .addComponent(jButton8)
-                        .addGap(26, 26, 26)
-                        .addComponent(jButton2)
-                        .addGap(32, 32, 32)
-                        .addComponent(jButton3)
-                        .addGap(40, 40, 40)
-                        .addComponent(jButton5)
-                        .addGap(47, 47, 47)
-                        .addComponent(jButton4)
-                        .addGap(0, 508, Short.MAX_VALUE))
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(23, 23, 23)
@@ -174,20 +162,17 @@ public class StaffFrame extends javax.swing.JPanel {
                         .addContainerGap()
                         .addComponent(jScrollPane3)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(574, 574, 574)
+                .addComponent(jLabel2)
+                .addContainerGap(631, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4)
-                    .addComponent(jButton5)
-                    .addComponent(jButton3)
-                    .addComponent(jButton2)
-                    .addComponent(jButton8)
-                    .addComponent(jButton6)
-                    .addComponent(jButton7))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                .addGap(16, 16, 16)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
                 .addComponent(jLabel1)
@@ -210,20 +195,14 @@ public class StaffFrame extends javax.swing.JPanel {
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable2;
     private javax.swing.JTable tblGuiSMS;
-    private javax.swing.JTable tblNhanVien;
+    private static javax.swing.JTable tblNhanVien;
     // End of variables declaration//GEN-END:variables
 }

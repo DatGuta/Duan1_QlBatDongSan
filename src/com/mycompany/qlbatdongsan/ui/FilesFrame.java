@@ -4,6 +4,15 @@
  */
 package com.mycompany.qlbatdongsan.ui;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URI;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import javax.swing.JFileChooser;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -11,31 +20,59 @@ import javax.swing.table.DefaultTableModel;
  * @author HO VAN DAT
  */
 public class FilesFrame extends javax.swing.JPanel {
+
     DefaultTableModel model;
     private int indexDuAn = -1;
     private int indexTep = -1;
+
     /**
-             * Creates new form FilesFrame
-             */
+     * Creates new form FilesFrame
+     */
 
     public FilesFrame() {
         initComponents();
         initTableDuAn();
         initTableTep();
     }
-    public void initTableDuAn(){
+
+    public void initTableDuAn() {
         model = (DefaultTableModel) tblDuAn.getModel();
-        Object[] column = {"Mã dự án","Tên dự án","Sàn giao dịch",""};
+        Object[] column = {"Mã dự án", "Tên dự án", "Sàn giao dịch", ""};
         model.setColumnIdentifiers(column);
         model.setRowCount(0);
     }
-    public void initTableTep(){
+
+    public void initTableTep() {
         model = (DefaultTableModel) tblTep.getModel();
-        Object[] column = {"Kí hiệu","Tên tài liệu","Diễn giải","Ngày cập nhật"};
+        Object[] column = {"Kí hiệu", "Tên tài liệu", "Diễn giải", "Ngày cập nhật"};
         model.setColumnIdentifiers(column);
         model.setRowCount(0);
     }
-    
+
+    public void OpenFile() {
+        JFileChooser FileChoiser = new JFileChooser("src");
+        int result = FileChoiser.showOpenDialog(null);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            String PathFile = FileChoiser.getSelectedFile().getPath();
+            String NameFile = FileChoiser.getSelectedFile().getName();
+        }
+    }
+    public void SaveAs(String url, String NameFile){            
+                try {
+                    Path path = Paths.get(url);
+                    byte[] buffer = java.nio.file.Files.readAllBytes(path);
+
+                    File targetFile = new File(NameFile);
+                    OutputStream outStream = new FileOutputStream(targetFile);
+                    outStream.write(buffer);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+    }
+    public void openFile(String url) throws IOException{        
+        Desktop.getDesktop().open(new File(url));
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

@@ -20,11 +20,12 @@ public class EmailFrame extends javax.swing.JPanel {
         initTableEmail();
     }
     private  void initTableEmail(){
-        model = (DefaultTableModel) tblEmail.getModel();
+        //model = (DefaultTableModel) tblEmail.getModel();
         Object[] column ={"Mã Email","Nội dung","Người gữi","Người nhận","Ngày gữi"};
         model.setColumnIdentifiers(column);
         model.setRowCount(0);
     }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -35,114 +36,16 @@ public class EmailFrame extends javax.swing.JPanel {
     private void initComponents() {
 
         jMenu1 = new javax.swing.JMenu();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblEmail = new javax.swing.JTable();
-        panelRound1 = new com.mycompany.qlbatdongsan.ui.PanelRound();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jSeparator1 = new javax.swing.JSeparator();
-        jSeparator2 = new javax.swing.JSeparator();
-        jLabel1 = new javax.swing.JLabel();
 
         jMenu1.setText("jMenu1");
 
         setBackground(new java.awt.Color(255, 255, 255));
+        setOpaque(false);
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        tblEmail.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(tblEmail);
-
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 47, 910, 770));
-
-        panelRound1.setBackground(new java.awt.Color(204, 204, 204));
-        panelRound1.setRoundBottonLeft(30);
-        panelRound1.setRoundBottonRight(30);
-        panelRound1.setRoundTopLeft(30);
-        panelRound1.setRoundTopRight(30);
-
-        jButton1.setText("Chuyển tiếp");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        jButton2.setText("Tạo Email mới");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout panelRound1Layout = new javax.swing.GroupLayout(panelRound1);
-        panelRound1.setLayout(panelRound1Layout);
-        panelRound1Layout.setHorizontalGroup(
-            panelRound1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSeparator1)
-            .addComponent(jSeparator2)
-            .addGroup(panelRound1Layout.createSequentialGroup()
-                .addGap(85, 85, 85)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(100, Short.MAX_VALUE))
-            .addGroup(panelRound1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(panelRound1Layout.createSequentialGroup()
-                    .addGap(34, 34, 34)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(148, Short.MAX_VALUE)))
-        );
-        panelRound1Layout.setVerticalGroup(
-            panelRound1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelRound1Layout.createSequentialGroup()
-                .addGap(64, 64, 64)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
-                .addGap(18, 18, 18)
-                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(639, Short.MAX_VALUE))
-            .addGroup(panelRound1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(panelRound1Layout.createSequentialGroup()
-                    .addGap(14, 14, 14)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(716, Short.MAX_VALUE)))
-        );
-
-        add(panelRound1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 300, 770));
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/qlbatdongsan/images/icon/aerial-view-man-using-computer-laptop-wooden-table.jpg"))); // NOI18N
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(73, 0, -1, 867));
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        NewEmailFrame newEmailFrame = new NewEmailFrame();
-        newEmailFrame.setVisible(true);
-    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
-    private com.mycompany.qlbatdongsan.ui.PanelRound panelRound1;
-    private javax.swing.JTable tblEmail;
     // End of variables declaration//GEN-END:variables
 }

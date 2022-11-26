@@ -30,6 +30,8 @@ public class GreetFrame extends javax.swing.JPanel {
         AnhNen = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
+        setMinimumSize(new java.awt.Dimension(1340, 720));
+        setPreferredSize(new java.awt.Dimension(1340, 720));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setFont(new java.awt.Font("Barlow Condensed Light", 1, 48)); // NOI18N
@@ -38,7 +40,7 @@ public class GreetFrame extends javax.swing.JPanel {
         add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 300, 680, 60));
 
         AnhNen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/qlbatdongsan/images/icon/pexels-lukas-1419923.jpg"))); // NOI18N
-        add(AnhNen, new org.netbeans.lib.awtextra.AbsoluteConstraints(88, 0, -1, 713));
+        add(AnhNen, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 60, -1, 620));
     }// </editor-fold>//GEN-END:initComponents
 
 

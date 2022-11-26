@@ -4,14 +4,18 @@
  */
 package com.mycompany.qlbatdongsan.ui;
 
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
  * @author HO VAN DAT
  */
 public class MajorFrame extends javax.swing.JPanel {
+
     DefaultTableModel model;
+
     /**
      * Creates new form MajorFrame
      */
@@ -20,20 +24,45 @@ public class MajorFrame extends javax.swing.JPanel {
         initTableHopDong();
         initTablePhieu();
     }
+
     private void initTablePhieu() {
         model = new DefaultTableModel();
-        Object[] column = {"Mã phiếu","Ngày ghi phiếu","Mã sản phẩm dự án","Đơn giá","Diện tích","Số lô","Thành tiền","Số tiền","Mã nhân viên","Mã khách hàng","Loại phiếu"};
+        Object[] column = {"Mã phiếu", "Ngày ghi phiếu", "Mã sản phẩm dự án", "Đơn giá", "Diện tích", "Số lô", "Thành tiền", "Số tiền", "Mã nhân viên", "Mã khách hàng", "Loại phiếu"};
         model.setColumnIdentifiers(column);
         model.setRowCount(0);
         tblPhieu.setModel(model);
     }
+
     private void initTableHopDong() {
         model = new DefaultTableModel();
-        Object[] column = {"STT","Mã hợp đồng","Ngày ký","Mã phiếu","Trạng thái","Mã chuyển nhượng","Khách hàng","Mã sản phẩm","Chiết khấu","Thời hạn","Loại hợp đồng"};
+        Object[] column = {"STT", "Mã hợp đồng", "Ngày ký", "Mã phiếu", "Trạng thái", "Mã chuyển nhượng", "Khách hàng", "Mã sản phẩm", "Chiết khấu", "Thời hạn", "Loại hợp đồng"};
         model.setColumnIdentifiers(column);
         model.setRowCount(0);
         tblHopDong.setModel(model);
     }
+
+    public static void Search(String str) {
+        if (str.length() > 0) {
+            if (tblHopDong!=null) {
+                DefaultTableModel model = (DefaultTableModel) tblHopDong.getModel();
+                TableRowSorter<DefaultTableModel> trs = new TableRowSorter<>(model);
+                tblHopDong.setRowSorter(trs);
+                trs.setRowFilter(RowFilter.regexFilter(str));
+            }else{
+                return;
+            }
+            //Table Phieu va Hơp Dong
+            if (tblPhieu!=null) {
+                DefaultTableModel model1 = (DefaultTableModel) tblPhieu.getModel();
+                TableRowSorter<DefaultTableModel> trs1 = new TableRowSorter<>(model1);
+                tblPhieu.setRowSorter(trs1);
+                trs1.setRowFilter(RowFilter.regexFilter(str));
+            }else{
+                return;
+            }
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -48,17 +77,23 @@ public class MajorFrame extends javax.swing.JPanel {
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblHopDong = new javax.swing.JTable();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblPhieu = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1315, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 695, Short.MAX_VALUE)
+        );
 
         tblHopDong.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -73,57 +108,31 @@ public class MajorFrame extends javax.swing.JPanel {
         ));
         jScrollPane2.setViewportView(tblHopDong);
 
-        jButton4.setText("Tạo ");
-
-        jButton5.setText("Xóa");
-
-        jButton6.setText("Sửa");
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton4)
-                .addGap(37, 37, 37)
-                .addComponent(jButton6)
-                .addGap(40, 40, 40)
-                .addComponent(jButton5)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1327, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4)
-                    .addComponent(jButton5)
-                    .addComponent(jButton6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 634, Short.MAX_VALUE))
-        );
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1327, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1304, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(17, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addContainerGap()))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 695, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 540, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(148, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         jTabbedPane1.addTab("Hợp đồng", jPanel2);
@@ -139,13 +148,8 @@ public class MajorFrame extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblPhieu.setFocusable(false);
         jScrollPane1.setViewportView(tblPhieu);
-
-        jButton1.setText("Tạo ");
-
-        jButton2.setText("Xóa");
-
-        jButton3.setText("Sửa");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -153,27 +157,22 @@ public class MajorFrame extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton1)
-                .addGap(37, 37, 37)
-                .addComponent(jButton3)
-                .addGap(40, 40, 40)
-                .addComponent(jButton2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1327, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1315, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 634, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 646, Short.MAX_VALUE)
+                .addGap(55, 55, 55))
         );
 
         jTabbedPane1.addTab("Phiếu", jPanel1);
+
+        jLabel1.setFont(new java.awt.Font("Serif", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel1.setText("NGHIỆP VỤ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -183,11 +182,17 @@ public class MajorFrame extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jTabbedPane1)
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(557, 557, 557)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(16, 16, 16)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
                 .addComponent(jTabbedPane1)
                 .addContainerGap())
         );
@@ -195,19 +200,14 @@ public class MajorFrame extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable tblHopDong;
-    private javax.swing.JTable tblPhieu;
+    private static javax.swing.JTable tblHopDong;
+    private static javax.swing.JTable tblPhieu;
     // End of variables declaration//GEN-END:variables
 }
