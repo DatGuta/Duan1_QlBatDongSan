@@ -46,9 +46,10 @@
                       <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                       <Component id="btnExitProject" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="lblSeeProject1" max="32767" attributes="0"/>
                   <Component id="lblSeeProject" alignment="0" pref="850" max="32767" attributes="0"/>
                   <Component id="lblImageDa" max="32767" attributes="0"/>
+                  <Component id="lblSeeProject2" alignment="1" max="32767" attributes="0"/>
+                  <Component id="lblSeeProject1" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="btnNext" min="-2" pref="68" max="-2" attributes="0"/>
@@ -77,7 +78,9 @@
               <Component id="lblSeeProject" min="-2" pref="27" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="lblSeeProject1" min="-2" pref="27" max="-2" attributes="0"/>
-              <EmptySpace pref="52" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+              <Component id="lblSeeProject2" min="-2" pref="27" max="-2" attributes="0"/>
+              <EmptySpace pref="45" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnExitProject" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnEditProject" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -129,6 +132,7 @@
           <Font name="Segoe UI" size="24" style="1"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="0"/>
+        <Property name="text" type="java.lang.String" value="Ch&#x1b0;a c&#xf3; h&#xec;nh &#x1ea3;nh"/>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
             <EtchetBorder/>
@@ -178,7 +182,19 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="0" red="0" type="rgb"/>
         </Property>
+        <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="text" type="java.lang.String" value="Th&#xf4;ng tin d&#x1ef1; &#xe1;n : "/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblSeeProject2">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Segoe UI Black" size="14" style="1"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="cc" green="0" red="0" type="rgb"/>
+        </Property>
+        <Property name="horizontalAlignment" type="int" value="0"/>
       </Properties>
     </Component>
   </SubComponents>

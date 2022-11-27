@@ -19,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
 public class ManangerProjectFrame extends javax.swing.JFrame {
     private int row = -1;
     QuanLyDuAn da;
-    SanPhamDuAnDAO daoSP = new SanPhamDuAnDAO();
+    static SanPhamDuAnDAO daoSP = new SanPhamDuAnDAO();
     DefaultTableModel model;
     /**
      * Creates new form ManangerProjectFrame
@@ -28,7 +28,6 @@ public class ManangerProjectFrame extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         setIconImage(XImage.getAppIcon());
-        setLocationRelativeTo(null);
         setTitle("QUẢN LÝ SẢN PHẨM DỰ ÁN BẤT ĐỘNG SẢN DVPTP");
         setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);
         this.da = entity;
@@ -52,7 +51,7 @@ public class ManangerProjectFrame extends javax.swing.JFrame {
         model.setRowCount(0);
         tblSPProject.setModel(model);
     }
-    public void fillToTable(){
+    public static void fillToTable(){
         DefaultTableModel model = (DefaultTableModel) tblSPProject.getModel();
         model.setRowCount(0);
         try {
@@ -114,6 +113,9 @@ public class ManangerProjectFrame extends javax.swing.JFrame {
             }
         ));
         tblSPProject.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblSPProjectMouseClicked(evt);
+            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 tblSPProjectMousePressed(evt);
             }
@@ -208,7 +210,7 @@ public class ManangerProjectFrame extends javax.swing.JFrame {
 
     private void lblAddSPProjectMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddSPProjectMouseClicked
         // TODO add your handling code here:
-        AddSPProjectFrame addSPProjectFrame = new AddSPProjectFrame(da.getMaDA());
+        AddSPProjectFrame addSPProjectFrame = new AddSPProjectFrame(da);
         addSPProjectFrame.setVisible(true);
     }//GEN-LAST:event_lblAddSPProjectMouseClicked
 
@@ -223,6 +225,11 @@ public class ManangerProjectFrame extends javax.swing.JFrame {
         btnAddSPProject.setBounds(btnAddSPProject.getX() + 5, btnAddSPProject.getY() + 5, btnAddSPProject.getWidth() - 10, btnAddSPProject.getHeight() - 10);
         lblAddSPProject.setBounds(lblAddSPProject.getX(), lblAddSPProject.getY(), lblAddSPProject.getWidth() - 10, lblAddSPProject.getHeight() - 10);
     }//GEN-LAST:event_lblAddSPProjectMouseExited
+
+    private void tblSPProjectMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblSPProjectMouseClicked
+        // TODO add your handling code here:
+       
+    }//GEN-LAST:event_tblSPProjectMouseClicked
 
     /**
      * @param args the command line arguments
@@ -263,6 +270,6 @@ public class ManangerProjectFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblAddSPProject;
-    private javax.swing.JTable tblSPProject;
+    private static javax.swing.JTable tblSPProject;
     // End of variables declaration//GEN-END:variables
 }

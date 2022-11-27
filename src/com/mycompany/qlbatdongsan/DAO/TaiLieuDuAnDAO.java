@@ -16,6 +16,7 @@ public class TaiLieuDuAnDAO extends QLBDSDAO<TaiLieuDuAN, String> {
     final String SELECT_ALL_SQL = "SELECT * FROM TaiLieuDuAN";
     final String SELECT_BY_ID_SQL = "SELECT *FROM TaiLieuDuAN WHERE kyHieu = ?";
     final String SELECT_BY_ID_DA_SQL = "SELECT *FROM TaiLieuDuAN WHERE maDA = ?";
+    final String SELECT_BY_ID_SPDA_SQL = "SELECT *FROM TaiLieuDuAN WHERE maSPDA = ?";
 
     @Override
     public void insert(TaiLieuDuAN entity) {
@@ -52,6 +53,13 @@ public class TaiLieuDuAnDAO extends QLBDSDAO<TaiLieuDuAN, String> {
 
     public List<TaiLieuDuAN> selectByIdmaDA(String id) {
         List<TaiLieuDuAN> list = selectBySql(SELECT_BY_ID_DA_SQL, id);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list;
+    }
+    public List<TaiLieuDuAN> selectByIdmaSPDA(String id) {
+        List<TaiLieuDuAN> list = selectBySql(SELECT_BY_ID_SPDA_SQL, id);
         if (list.isEmpty()) {
             return null;
         }

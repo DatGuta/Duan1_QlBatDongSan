@@ -10,11 +10,11 @@ import java.util.List;
 
 public class SanGiaoDichDAO extends QLBDSDAO<SanGiaoDich, Integer> {
 
-    final String INSERT_SQL = "INSERT INTO SanGiaoDich (maSGD, sanGiaoDich, Sdt, diaChi, nguoiLienHe, chucVu, SdtNLH, nhanVienQuanLy, nhanVienTao, ngayTao) VALUES (?,?,?,?,?,?,?,?,?,?)";
-    final String UPDATE_SQL = "UPDATE SanGiaoDich SET sanGiaoDich = ?, Sdt = ?, diaChi = ?, nguoiLienHe = ?, chucVu = ?, SdtNLH = ?, nhanVienQuanLy = ?, nhanVienTao = ?, ngayTao = ? WHERE maSGD = ?";
-    final String DELETE_SQL = "DELETE FROM SanGiaoDich WHERE maSGD = ?";
-    final String SELECT_ALL_SQL = "SELECT * FROM SanGiaoDich";
-    final String SELECT_BY_ID_SQL = "SELECT *FROM SanGiaoDich WHERE maSGD = ?";
+    final String INSERT_SQL = "INSERT INTO SANGIAODICH (maSGD, sanGiaoDich, Sdt, diaChi, nguoiLienHe, chucVu, SdtNLH, nhanVienQuanLy, nhanVienTao, ngayTao) VALUES (?,?,?,?,?,?,?,?,?,?)";
+    final String UPDATE_SQL = "UPDATE SANGIAODICH SET sanGiaoDich = ?, Sdt = ?, diaChi = ?, nguoiLienHe = ?, chucVu = ?, SdtNLH = ?, nhanVienQuanLy = ?, nhanVienTao = ?, ngayTao = ? WHERE maSGD = ?";
+    final String DELETE_SQL = "DELETE FROM SANGIAODICH WHERE maSGD = ?";
+    final String SELECT_ALL_SQL = "SELECT * FROM SANGIAODICH";
+    final String SELECT_BY_ID_SQL = "SELECT *FROM SANGIAODICH WHERE maSGD = ?";
 
     @Override
     public void insert(SanGiaoDich entity) {

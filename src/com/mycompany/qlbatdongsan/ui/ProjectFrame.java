@@ -93,6 +93,9 @@ public class ProjectFrame extends javax.swing.JPanel {
                 return;
             }
         }
+        if (str.length()==0) {
+            fillTableDA();
+        }
     }
 
     /**
@@ -150,7 +153,7 @@ public class ProjectFrame extends javax.swing.JPanel {
         btnAddProject.setLayout(btnAddProjectLayout);
         btnAddProjectLayout.setHorizontalGroup(
             btnAddProjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblAddProject, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
+            .addComponent(lblAddProject, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
         );
         btnAddProjectLayout.setVerticalGroup(
             btnAddProjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -169,7 +172,7 @@ public class ProjectFrame extends javax.swing.JPanel {
                             .addComponent(jLabel1)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1244, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(553, 553, 553)
+                        .addGap(582, 582, 582)
                         .addComponent(btnAddProject, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(35, 35, 35))
         );
@@ -180,9 +183,9 @@ public class ProjectFrame extends javax.swing.JPanel {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 569, Short.MAX_VALUE)
-                .addGap(44, 44, 44)
+                .addGap(38, 38, 38)
                 .addComponent(btnAddProject, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44))
+                .addGap(50, 50, 50))
         );
     }// </editor-fold>//GEN-END:initComponents
 

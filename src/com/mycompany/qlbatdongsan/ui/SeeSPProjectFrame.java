@@ -4,8 +4,21 @@
  */
 package com.mycompany.qlbatdongsan.ui;
 
+import com.mycompany.qlbatdongsan.DAO.NhanVienDAO;
+import com.mycompany.qlbatdongsan.DAO.QuanLyDuAnDAO;
+import com.mycompany.qlbatdongsan.DAO.SanGiaoDichDAO;
+import com.mycompany.qlbatdongsan.DAO.TaiLieuDuAnDAO;
+import com.mycompany.qlbatdongsan.Entity.NhanVien;
+import com.mycompany.qlbatdongsan.Entity.QuanLyDuAn;
+import com.mycompany.qlbatdongsan.Entity.SanGiaoDich;
 import com.mycompany.qlbatdongsan.utils.MsgBox;
 import com.mycompany.qlbatdongsan.Entity.SanPhamDuAn;
+import com.mycompany.qlbatdongsan.Entity.TaiLieuDuAN;
+import com.mycompany.qlbatdongsan.utils.XImage;
+import java.awt.Image;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -13,14 +26,79 @@ import com.mycompany.qlbatdongsan.Entity.SanPhamDuAn;
  */
 public class SeeSPProjectFrame extends javax.swing.JFrame {
     SanPhamDuAn SPDA;
+    QuanLyDuAnDAO daoDA = new QuanLyDuAnDAO();
+    TaiLieuDuAnDAO daoImage = new TaiLieuDuAnDAO();
+    NhanVienDAO  daoNV = new NhanVienDAO();
+    SanGiaoDichDAO daoSGD = new SanGiaoDichDAO();
+    private int indexImage;
+    
     /**
      * Creates new form SeeSPProjectFrame
      */
     public SeeSPProjectFrame(SanPhamDuAn entity) {
         initComponents();
-        this.SPDA = entity;
+        setIconImage(XImage.getAppIcon());
+        setTitle("QUẢN LÝ SẢN PHẨM DỰ ÁN BẤT ĐỘNG SẢN DVPTP");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
+        this.SPDA = entity;
+        ImageProject();
+        SeeProject();
+        indexImage=setIndexImage();
+        SeeImageProject();
+    }
+    public int setIndexImage() {
+        if (ImageProject() != null) {
+            return ImageProject().size() - 1;
+        }
+        return -1;
+    }
+
+    public List<TaiLieuDuAN> ImageProject() {
+        List<TaiLieuDuAN> list = daoImage.selectByIdmaSPDA(SPDA.getMaSPDA());
+        if (list != null) {
+            return list;
+        }
+        return list = new ArrayList<>();
+    }
+
+    public void SeeProject() {
+        if (ImageProject().isEmpty()) {
+            MsgBox.alert(this, "Dự án vẫn chưa có hình ảnh vui lòng thêm hình ảnh trong mục chỉnh sửa!!!");
+        }
+        QuanLyDuAn da = daoDA.selectById(SPDA.getMaDA());
+        NhanVien nv = daoNV.selectById(SPDA.getMaNVPhuTrach());
+        SanGiaoDich sgd = daoSGD.selectById(SPDA.getMaSGD());
+        lblSeeProject.setText("Thông tin dự án: Sản phẩm dự án " + SPDA.getTenDA() + " có mã dự án " + SPDA.getMaSPDA() +" thuộc dự án "+da.getTenDA()+ " thuộc loại dự án " + SPDA.getLoaiDA());
+        lblSeeProject1.setText("Được quy hoạc tại địa chỉ " + SPDA.getDiaChi()+" có giấy phép số " + SPDA.getSoGiayPhep() +", với diện tích là " + SPDA.getDienTich() + "m vuông  được cấp vào ngày " + SPDA.getNgayCap() + " tại " + SPDA.getNoiCap());
+        lblSeeProject2.setText("Được đăng vào ngày "+SPDA.getNgayDang()+" được phụ trách bởi "+nv.getHoTen()+", đang được "+SPDA.getTrangThai()+" tại sàn gio dịch "+sgd.getSanGiaoDich());
+    }
+    
+    public void SeeImageProject() {
+        for (int i = 0; i < ImageProject().size(); i++) {
+            if (i == indexImage) {
+                lblImageDa.setIcon(new ImageIcon(new ImageIcon("D:\\DuAn_1\\Duan1_QlBatDongSan\\src\\com\\mycompany\\qlbatdongsan\\images\\imgAvartar\\" + ImageProject().get(i).getHinh()).getImage().getScaledInstance(850, 570, Image.SCALE_DEFAULT)));
+                lblImageDa.setText(null);
+            }
+        }
+    }
+
+    public void Next() {
+        if (indexImage == ImageProject().size() - 1) {
+            indexImage = 0;
+        } else {
+            indexImage++;
+        }
+        SeeImageProject();
+    }
+
+    public void Previous() {
+        if (indexImage == 0) {
+            indexImage = ImageProject().size() - 1;
+        } else {
+            indexImage++;
+        }
+        SeeImageProject();
     }
 
     /**
@@ -32,17 +110,21 @@ public class SeeSPProjectFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnEditProject = new javax.swing.JButton();
+        btnEditSPProject = new javax.swing.JButton();
         btnExitProject = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        lblSeeProject1 = new javax.swing.JLabel();
+        lblImageDa = new javax.swing.JLabel();
+        btnPrevious = new javax.swing.JLabel();
+        btnNext = new javax.swing.JLabel();
+        lblSeeProject = new javax.swing.JLabel();
+        lblSeeProject2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        btnEditProject.setText("Chỉnh sửa");
-        btnEditProject.addActionListener(new java.awt.event.ActionListener() {
+        btnEditSPProject.setText("Chỉnh sửa");
+        btnEditSPProject.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditProjectActionPerformed(evt);
+                btnEditSPProjectActionPerformed(evt);
             }
         });
 
@@ -53,61 +135,153 @@ public class SeeSPProjectFrame extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("Thông tin sản phẩm dự án: ");
+        lblSeeProject1.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
+        lblSeeProject1.setForeground(new java.awt.Color(0, 0, 204));
+        lblSeeProject1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/qlbatdongsan/images/imgAvartar/ThanhVySv2.png"))); // NOI18N
+        lblImageDa.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblImageDa.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblImageDa.setText("Chưa có hình ảnh");
+        lblImageDa.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        btnPrevious.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
+        btnPrevious.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnPrevious.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/qlbatdongsan/images/icon/icons8-back-to-64.png"))); // NOI18N
+        btnPrevious.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnPrevious.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnPreviousMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnPreviousMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnPreviousMouseExited(evt);
+            }
+        });
+
+        btnNext.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
+        btnNext.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnNext.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/qlbatdongsan/images/icon/icons8-next-page-64.png"))); // NOI18N
+        btnNext.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnNext.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnNextMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnNextMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnNextMouseExited(evt);
+            }
+        });
+
+        lblSeeProject.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
+        lblSeeProject.setForeground(new java.awt.Color(0, 0, 255));
+        lblSeeProject.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblSeeProject.setText("Thông tin sản phẩm : ");
+
+        lblSeeProject2.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
+        lblSeeProject2.setForeground(new java.awt.Color(0, 0, 204));
+        lblSeeProject2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnEditProject)
-                .addGap(36, 36, 36)
-                .addComponent(btnExitProject)
-                .addGap(52, 52, 52))
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 1068, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(44, 44, 44)
+                .addComponent(btnPrevious, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(lblSeeProject2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblSeeProject1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblSeeProject, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnEditSPProject)
+                        .addGap(51, 51, 51)
+                        .addComponent(btnExitProject))
+                    .addComponent(lblImageDa, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 1043, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btnNext, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(44, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 559, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+                .addGap(16, 16, 16)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnPrevious)
+                        .addGap(399, 399, 399))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(lblImageDa, javax.swing.GroupLayout.PREFERRED_SIZE, 570, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(lblSeeProject, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(lblSeeProject1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(20, 20, 20)
+                            .addComponent(lblSeeProject2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addGap(264, 264, 264)
+                            .addComponent(btnNext)
+                            .addGap(397, 397, 397))))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnExitProject)
-                    .addComponent(btnEditProject))
+                    .addComponent(btnExitProject, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEditSPProject, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(44, 44, 44))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnEditProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditProjectActionPerformed
+    private void btnEditSPProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditSPProjectActionPerformed
         // TODO add your handling code here:
-        EditSPProjectFrame editSPProjectFrame =new EditSPProjectFrame(SPDA);
+        EditSPProjectFrame editSPProjectFrame = new EditSPProjectFrame(SPDA);
         editSPProjectFrame.setVisible(true);
         this.dispose();
-
-    }//GEN-LAST:event_btnEditProjectActionPerformed
+    }//GEN-LAST:event_btnEditSPProjectActionPerformed
 
     private void btnExitProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitProjectActionPerformed
         // TODO add your handling code here:
         if (MsgBox.confirm(this, "Bạn có chắc chắn muốn thoát")) {
             this.dispose();
         }
-
     }//GEN-LAST:event_btnExitProjectActionPerformed
+
+    private void btnPreviousMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPreviousMouseClicked
+        // TODO add your handling code her
+        btnPrevious.setIcon(new ImageIcon("D:\\DuAn_1\\Duan1_QlBatDongSan\\src\\com\\mycompany\\qlbatdongsan\\images\\icon\\icons8-go-back-64.png"));
+        Previous();
+    }//GEN-LAST:event_btnPreviousMouseClicked
+
+    private void btnPreviousMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPreviousMouseEntered
+        // TODO add your handling code here:
+        btnPrevious.setIcon(new ImageIcon("D:\\DuAn_1\\Duan1_QlBatDongSan\\src\\com\\mycompany\\qlbatdongsan\\images\\icon\\icons8-back-to-1-64.png"));
+    }//GEN-LAST:event_btnPreviousMouseEntered
+
+    private void btnPreviousMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPreviousMouseExited
+        // TODO add your handling code here:
+        btnPrevious.setIcon(new ImageIcon("D:\\DuAn_1\\Duan1_QlBatDongSan\\src\\com\\mycompany\\qlbatdongsan\\images\\icon\\icons8-back-to-64.png"));
+    }//GEN-LAST:event_btnPreviousMouseExited
+
+    private void btnNextMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNextMouseClicked
+        // TODO add your handling code here:
+        btnNext.setIcon(new ImageIcon("D:\\DuAn_1\\Duan1_QlBatDongSan\\src\\com\\mycompany\\qlbatdongsan\\images\\icon\\icons8-circled-right-64.png"));
+        Next();
+    }//GEN-LAST:event_btnNextMouseClicked
+
+    private void btnNextMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNextMouseEntered
+        // TODO add your handling code here:
+        btnNext.setIcon(new ImageIcon("D:\\DuAn_1\\Duan1_QlBatDongSan\\src\\com\\mycompany\\qlbatdongsan\\images\\icon\\icons8-next-page-1-64.png"));
+    }//GEN-LAST:event_btnNextMouseEntered
+
+    private void btnNextMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNextMouseExited
+        // TODO add your handling code here:
+        btnNext.setIcon(new ImageIcon("D:\\DuAn_1\\Duan1_QlBatDongSan\\src\\com\\mycompany\\qlbatdongsan\\images\\icon\\icons8-next-page-64.png"));
+    }//GEN-LAST:event_btnNextMouseExited
 
     /**
      * @param args the command line arguments
@@ -145,9 +319,13 @@ public class SeeSPProjectFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnEditProject;
+    private javax.swing.JButton btnEditSPProject;
     private javax.swing.JButton btnExitProject;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel btnNext;
+    private javax.swing.JLabel btnPrevious;
+    private javax.swing.JLabel lblImageDa;
+    private javax.swing.JLabel lblSeeProject;
+    private javax.swing.JLabel lblSeeProject1;
+    private javax.swing.JLabel lblSeeProject2;
     // End of variables declaration//GEN-END:variables
 }

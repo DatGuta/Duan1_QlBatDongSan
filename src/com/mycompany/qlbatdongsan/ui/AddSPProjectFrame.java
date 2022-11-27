@@ -4,19 +4,69 @@
  */
 package com.mycompany.qlbatdongsan.ui;
 
+import com.mycompany.qlbatdongsan.DAO.SanPhamDuAnDAO;
+import com.mycompany.qlbatdongsan.Entity.QuanLyDuAn;
+import com.mycompany.qlbatdongsan.Entity.SanPhamDuAn;
+import com.mycompany.qlbatdongsan.utils.MsgBox;
+import com.mycompany.qlbatdongsan.utils.XDate;
+
 /**
  *
  * @author HO VAN DAT
  */
 public class AddSPProjectFrame extends javax.swing.JFrame {
-
+    QuanLyDuAn da;
+    SanPhamDuAnDAO daoSPDA = new SanPhamDuAnDAO();
     /**
      * Creates new form AddSPProjectFrame
      */
-    public AddSPProjectFrame(String maDA) {
+    public AddSPProjectFrame(QuanLyDuAn entity) {
         initComponents();
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.da=entity;
+    }
+    public SanPhamDuAn getForm(){
+        SanPhamDuAn spDA = new SanPhamDuAn();
+        spDA.setMaSPDA(txtMaSPDuAn.getText());
+        spDA.setMaDA(da.getMaDA());
+        spDA.setDiaChi(txaDiaChi.getText());
+        spDA.setDienTich(Float.valueOf(txtDienTich.getText()));
+        spDA.setLoaiDA(txtLoaiDuAn.getText());
+        spDA.setMaSGD(Integer.valueOf(txtSanGiaoDich.getText()));
+        spDA.setNgayCap(XDate.toDate(txtNgayCap.getText(), "yyyy-MM-dd"));
+        spDA.setNgayDang(XDate.toDate(txtNgayDang.getText(), "yyyy-MM-dd"));
+        spDA.setNoiCap(txtNoiCap.getText());
+        spDA.setTrangThai(txtTrangThai.getText());
+        spDA.setMaNVPhuTrach(da.getMaNVPhuTrach());
+        return spDA;
+    }
+    
+    void add() {
+        SanPhamDuAn da = getForm();
+        try {
+            daoSPDA.insert(da);
+            ManangerProjectFrame.fillToTable();
+            MsgBox.alert(this, "Thêm  sản phẩm dự án thành công!");
+            this.dispose();
+        } catch (Exception e) {
+            MsgBox.alert(this, "Đã có lỗi xảy ra!");
+            e.printStackTrace();
+        }
+
+    }
+    void clearForm(){
+        txtDienTich.setText(null);
+        txtLoaiDuAn.setText(null);
+        txtMaSPDuAn.setText(null);
+        txtNVPhuTrach.setText(null);
+        txtNgayCap.setText(null);
+        txtNgayDang.setText(null);
+        txtNoiCap.setText(null);
+        txtSanGiaoDich.setText(null);
+        txtSoGiayPhep.setText(null);
+        txtTenSPDuAn.setText(null);
+        txtTrangThai.setText(null);
     }
 
     /**
@@ -63,6 +113,11 @@ public class AddSPProjectFrame extends javax.swing.JFrame {
         btnHuy.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnHuyMouseClicked(evt);
+            }
+        });
+        btnHuy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHuyActionPerformed(evt);
             }
         });
 
@@ -343,7 +398,8 @@ public class AddSPProjectFrame extends javax.swing.JFrame {
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
-
+        add();
+        clearForm();
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void txtMaSPDuAnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtMaSPDuAnMouseClicked
@@ -402,6 +458,11 @@ public class AddSPProjectFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         txaDiaChi.setText(null);
     }//GEN-LAST:event_txaDiaChiMouseClicked
+
+    private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuyActionPerformed
+        // TODO add your handling code here:
+            this.dispose();
+    }//GEN-LAST:event_btnHuyActionPerformed
 
     /**
      * @param args the command line arguments

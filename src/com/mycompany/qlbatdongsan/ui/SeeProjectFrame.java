@@ -30,19 +30,19 @@ public class SeeProjectFrame extends javax.swing.JFrame {
         this.da = entity;
         setLocationRelativeTo(null);
         setIconImage(XImage.getAppIcon());
-        setTitle("HỆ THỐNG QUẢN LÝ BẤT ĐỘNG SẢN DVPTP");
+        setTitle("QUẢN LÝ DỰ ÁN BẤT ĐỘNG SẢN DVPTP");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        SeeProject();
-        SeeImageProject();
         ImageProject();
+        SeeProject();
         indexImage = setIndexImage();
+        SeeImageProject();
     }
 
     public int setIndexImage() {
         if (ImageProject() != null) {
             return ImageProject().size() - 1;
         }
-        return 0;
+        return -1;
     }
 
     public List<TaiLieuDuAN> ImageProject() {
@@ -58,14 +58,15 @@ public class SeeProjectFrame extends javax.swing.JFrame {
             MsgBox.alert(this, "Dự án vẫn chưa có hình ảnh vui lòng thêm hình ảnh trong mục chỉnh sửa!!!");
             lblImageDa.setText("Vẫn chưa thêm hình ảnh!");
         }
-        lblSeeProject.setText("Thông tin dự án: Dự án " + da.getTenDA() + " có Mã Dự Án " + da.getMaDA() + " thuộc loại Dự Án " + da.getLoaiDA() + " Ở địa chỉ " + da.getDiaChi());
-        lblSeeProject1.setText("Với diện tích là " + da.getDienTich() + " cấp vào ngày " + da.getNgayCap() + " Nơi cấp ở " + da.getNoiCap() + " có giấy phép số " + da.getSoGiayPhep());
+        lblSeeProject.setText("Thông tin dự án: Dự án " + da.getTenDA() + " có mã dự án " + da.getMaDA() + " thuộc loại dự án " + da.getLoaiDA() + ", được quy hoạch tại " + da.getDiaChi());
+        lblSeeProject1.setText("Với diện tích là "+ da.getDienTich() + " số giấy phép " + da.getSoGiayPhep() + " cấp vào ngày " + da.getNgayCap() + " tại " + da.getNoiCap());
     }
 
     public void SeeImageProject() {
         for (int i = 0; i < ImageProject().size(); i++) {
             if (i == indexImage) {
                 lblImageDa.setIcon(new ImageIcon(new ImageIcon("D:\\DuAn_1\\Duan1_QlBatDongSan\\src\\com\\mycompany\\qlbatdongsan\\images\\imgAvartar\\" + ImageProject().get(i).getHinh()).getImage().getScaledInstance(850, 570, Image.SCALE_DEFAULT)));
+                lblImageDa.setText(null);
             }
         }
     }
@@ -106,6 +107,7 @@ public class SeeProjectFrame extends javax.swing.JFrame {
         btnPrevious = new javax.swing.JLabel();
         btnNext = new javax.swing.JLabel();
         lblSeeProject = new javax.swing.JLabel();
+        lblSeeProject2 = new javax.swing.JLabel();
 
         jRadioButtonMenuItem1.setSelected(true);
         jRadioButtonMenuItem1.setText("jRadioButtonMenuItem1");
@@ -139,6 +141,7 @@ public class SeeProjectFrame extends javax.swing.JFrame {
 
         lblImageDa.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblImageDa.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblImageDa.setText("Chưa có hình ảnh");
         lblImageDa.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         btnPrevious.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
@@ -175,7 +178,12 @@ public class SeeProjectFrame extends javax.swing.JFrame {
 
         lblSeeProject.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
         lblSeeProject.setForeground(new java.awt.Color(0, 0, 255));
+        lblSeeProject.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblSeeProject.setText("Thông tin dự án : ");
+
+        lblSeeProject2.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
+        lblSeeProject2.setForeground(new java.awt.Color(0, 0, 204));
+        lblSeeProject2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -192,9 +200,10 @@ public class SeeProjectFrame extends javax.swing.JFrame {
                         .addComponent(btnEditProject)
                         .addGap(26, 26, 26)
                         .addComponent(btnExitProject))
-                    .addComponent(lblSeeProject1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblSeeProject, javax.swing.GroupLayout.DEFAULT_SIZE, 850, Short.MAX_VALUE)
-                    .addComponent(lblImageDa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lblImageDa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblSeeProject2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblSeeProject1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(btnNext, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(45, Short.MAX_VALUE))
@@ -216,7 +225,9 @@ public class SeeProjectFrame extends javax.swing.JFrame {
                 .addComponent(lblSeeProject, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(lblSeeProject1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                .addGap(20, 20, 20)
+                .addComponent(lblSeeProject2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnExitProject)
                     .addComponent(btnEditProject)
@@ -327,5 +338,6 @@ public class SeeProjectFrame extends javax.swing.JFrame {
     private javax.swing.JLabel lblImageDa;
     private javax.swing.JLabel lblSeeProject;
     private javax.swing.JLabel lblSeeProject1;
+    private javax.swing.JLabel lblSeeProject2;
     // End of variables declaration//GEN-END:variables
 }
