@@ -92,6 +92,10 @@ public class Main extends javax.swing.JFrame {
                 label[i].setForeground(new Color(153,153,153));
             }
         }
+        for (int i = 0; i < status.length; i++) {
+            status[i] = 0;
+        }
+        status[indexForMenuMain]=1;
     }
 
     /**
@@ -117,7 +121,7 @@ public class Main extends javax.swing.JFrame {
         panelRound4 = new com.mycompany.qlbatdongsan.utils.PanelRound();
         jLabel5 = new javax.swing.JLabel();
         panelRound1 = new com.mycompany.qlbatdongsan.utils.PanelRound();
-        jTextField1 = new javax.swing.JTextField();
+        txtSearchMain = new javax.swing.JTextField();
         lblNontification1 = new javax.swing.JLabel();
         lblNontification2 = new javax.swing.JLabel();
         palSettingLeft = new javax.swing.JPanel();
@@ -346,7 +350,12 @@ public class Main extends javax.swing.JFrame {
         panelRound1.setRoundTopLeft(30);
         panelRound1.setRoundTopRight(30);
 
-        jTextField1.setText("Nhập chức năng muốn tìm");
+        txtSearchMain.setText("Nhập chức năng muốn tìm");
+        txtSearchMain.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSearchMainActionPerformed(evt);
+            }
+        });
 
         lblNontification1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblNontification1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/qlbatdongsan/images/icon/icons8-left-click-30.png"))); // NOI18N
@@ -376,7 +385,7 @@ public class Main extends javax.swing.JFrame {
             panelRound1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelRound1Layout.createSequentialGroup()
                 .addGap(63, 63, 63)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtSearchMain, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblNontification1, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
                 .addContainerGap())
@@ -391,7 +400,7 @@ public class Main extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRound1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelRound1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jTextField1)
+                    .addComponent(txtSearchMain)
                     .addComponent(lblNontification1, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE))
                 .addContainerGap())
             .addGroup(panelRound1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1439,6 +1448,11 @@ public class Main extends javax.swing.JFrame {
         ExitedForLabel(btnCalendar1, 5);
     }//GEN-LAST:event_btnCalendar1MouseExited
 
+    private void txtSearchMainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchMainActionPerformed
+        // TODO add your handling code here:
+        txtSearchMain.setText(null);
+    }//GEN-LAST:event_txtSearchMainActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1504,7 +1518,6 @@ public class Main extends javax.swing.JFrame {
     private com.mycompany.qlbatdongsan.utils.ImageAvatar imageAvatarInWork;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lblChart;
     private javax.swing.JLabel lblChucVu;
     private javax.swing.JLabel lblCloud;
@@ -1526,5 +1539,6 @@ public class Main extends javax.swing.JFrame {
     private com.mycompany.qlbatdongsan.utils.PanelRound panelRound4;
     private com.mycompany.qlbatdongsan.utils.PanelRound panelRound9;
     private com.mycompany.qlbatdongsan.utils.PanelTransaction panelTransactionAllMain;
+    private javax.swing.JTextField txtSearchMain;
     // End of variables declaration//GEN-END:variables
 }

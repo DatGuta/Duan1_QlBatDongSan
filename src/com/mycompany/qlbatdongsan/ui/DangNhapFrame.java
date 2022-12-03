@@ -4,6 +4,7 @@
  */
 package com.mycompany.qlbatdongsan.ui;
 
+import com.google.zxing.qrcode.encoder.QRCode;
 import com.mycompany.qlbatdongsan.DAO.KhachHangDAO;
 import com.mycompany.qlbatdongsan.DAO.NhanVienDAO;
 import com.mycompany.qlbatdongsan.DAO.QuanLyDuAnDAO;
@@ -13,60 +14,84 @@ import com.mycompany.qlbatdongsan.utils.MsgBox;
 import com.mycompany.qlbatdongsan.utils.XImage;
 import com.mycompany.qlbatdongsan.Entity.KhachHang;
 import com.mycompany.qlbatdongsan.Entity.QuanLyDuAn;
-
+import java.awt.Component;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author HO VAN DAT
  */
 public class DangNhapFrame extends javax.swing.JFrame {
-    NhanVienDAO dao = new NhanVienDAO();
 
-       /**
+    static NhanVienDAO dao = new NhanVienDAO();
+
+    /**
      * Creates new form DangNhapFrame
      */
     public DangNhapFrame() {
         initComponents();
         init();
     }
-  void init(){
+
+    void init() {
         setIconImage(XImage.getAppIcon());
         setLocationRelativeTo(null);
         setTitle("DVPTP ĐĂNG NHẬP HỆ THỐNG");
         this.openWelcome();
     }
-     void openWelcome(){
+
+    void openWelcome() {
         new ChaoJDialog(this, true).setVisible(true);
     }
-    void openMain(){
+
+    void openMain() {
         try {
-            Main main =new Main();
+            Main main = new Main();
             main.setVisible(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    void ketThuc(){
+
+    void ketThuc() {
         if (MsgBox.confirm(this, "Bạn muốn kết thúc ứng dụng ?")) {
             System.exit(0);
         }
     }
-    void dangNhap(){
+
+    void dangNhap() {
         String strMaNV = txtTenDangNhap.getText();
         String strPassword = new String(txtMatKhau.getPassword());
-        NhanVien nv =(NhanVien) dao.selectById(strMaNV);
-        if (nv ==  null) {
+        NhanVien nv = (NhanVien) dao.selectById(strMaNV);
+        if (nv == null) {
             MsgBox.alert(this, "Sai tên đăng nhập");
-        }else{
+        } else {
             if (!nv.getMatKhau().equals(strPassword)) {
                 MsgBox.alert(this, "Sai mật khẩu");
-            }else{
+            } else {
                 Auth.user = nv;
-                openMain(); 
+                openMain();
                 this.dispose();
             }
         }
-     }
+    }
+    
+    static void initQRCode(String qrcode) {
+        if (qrcode!=null) {
+            NhanVien nv = dao.selectBymaQR(qrcode);
+            if (nv==null) {
+                txtTenDangNhap.setText(null);
+                txtMatKhau.setText(null);
+                return;
+            }
+            txtTenDangNhap.setText(nv.getMaNV());
+            txtMatKhau.setText(nv.getMatKhau());
+        }else{
+            txtTenDangNhap.setText(null);
+            txtMatKhau.setText(null);
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -84,6 +109,7 @@ public class DangNhapFrame extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         txtMatKhau = new javax.swing.JPasswordField();
         jLabel1 = new javax.swing.JLabel();
+        btnLoginWithQR = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -129,6 +155,13 @@ public class DangNhapFrame extends javax.swing.JFrame {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/qlbatdongsan/images/icon/skyebloom.png"))); // NOI18N
 
+        btnLoginWithQR.setText("Đăng nhập với mã QR");
+        btnLoginWithQR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginWithQRActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -138,19 +171,24 @@ public class DangNhapFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(53, 53, 53)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(txtMatKhau, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel5))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel5))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtTenDangNhap, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtTenDangNhap, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtMatKhau, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
+                            .addComponent(btnLoginWithQR, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)))
                 .addComponent(jLabel1)
                 .addGap(20, 20, 20))
@@ -160,20 +198,22 @@ public class DangNhapFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jLabel5)
-                        .addGap(34, 34, 34)
+                        .addGap(42, 42, 42)
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
                         .addComponent(txtTenDangNhap, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(34, 34, 34)
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel3)
-                        .addGap(26, 26, 26)
+                        .addGap(18, 18, 18)
                         .addComponent(txtMatKhau, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(46, 46, 46)
+                        .addGap(40, 40, 40)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnLoginWithQR, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel1))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
@@ -198,6 +238,12 @@ public class DangNhapFrame extends javax.swing.JFrame {
     private void txtMatKhauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMatKhauActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtMatKhauActionPerformed
+
+    private void btnLoginWithQRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginWithQRActionPerformed
+        // TODO add your handling code here:
+        QRCodeFrame qRCodeFrame = new QRCodeFrame();
+        qRCodeFrame.setVisible(true);
+    }//GEN-LAST:event_btnLoginWithQRActionPerformed
 
     /**
      * @param args the command line arguments
@@ -235,13 +281,14 @@ public class DangNhapFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnLoginWithQR;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JPasswordField txtMatKhau;
-    private javax.swing.JTextField txtTenDangNhap;
+    private static javax.swing.JPasswordField txtMatKhau;
+    private static javax.swing.JTextField txtTenDangNhap;
     // End of variables declaration//GEN-END:variables
 }

@@ -375,7 +375,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="63" max="-2" attributes="0"/>
-                      <Component id="jTextField1" min="-2" pref="302" max="-2" attributes="0"/>
+                      <Component id="txtSearchMain" min="-2" pref="302" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="lblNontification1" pref="41" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -394,7 +394,7 @@
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="jTextField1" max="32767" attributes="0"/>
+                          <Component id="txtSearchMain" max="32767" attributes="0"/>
                           <Component id="lblNontification1" pref="39" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -410,10 +410,13 @@
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JTextField" name="jTextField1">
+            <Component class="javax.swing.JTextField" name="txtSearchMain">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Nh&#x1ead;p ch&#x1ee9;c n&#x103;ng mu&#x1ed1;n t&#xec;m"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtSearchMainActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="lblNontification1">
               <Properties>

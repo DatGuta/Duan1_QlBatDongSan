@@ -16,6 +16,7 @@ public class ChuyenNhuongDAO extends QLBDSDAO<ChuyenNhuong, Integer > {
     final String DELETE_SQL = "DELETE FROM ChuyenNhuong WHERE maCN = ?";
     final String SELECT_ALL_SQL = "SELECT * FROM ChuyenNhuong";
     final String SELECT_BY_ID_SQL = "SELECT *FROM ChuyenNhuong WHERE maCN = ?";
+    final String SELECT_BY_soHOPDONG_SQL = "SELECT *FROM ChuyenNhuong WHERE soHopDong = ?";
 
     @Override
     public void insert(ChuyenNhuong entity) {
@@ -42,6 +43,14 @@ public class ChuyenNhuongDAO extends QLBDSDAO<ChuyenNhuong, Integer > {
     @Override
     public ChuyenNhuong selectById(Integer id) {
         List<ChuyenNhuong> list = selectBySql(SELECT_BY_ID_SQL, id);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
+    }
+    
+    public ChuyenNhuong selectBysoHopDong(String id) {
+        List<ChuyenNhuong> list = selectBySql(SELECT_BY_soHOPDONG_SQL, id);
         if (list.isEmpty()) {
             return null;
         }

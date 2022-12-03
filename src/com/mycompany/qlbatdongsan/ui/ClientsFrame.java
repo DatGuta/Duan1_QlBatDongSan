@@ -46,7 +46,7 @@ public class ClientsFrame extends javax.swing.JPanel {
                 return false;
             }
         };
-        Object[] column = {"STT", "Xưng", "Họ và tên đệm", "Tên", "Ngày sinh", "Di động", "Số CCCD", "Địa chỉ liên lạc", "Địa chỉ thường trú", "Email", "Mã thuế TNCN"};
+        Object[] column = {"STT", "Xưng", "Họ và tên đệm", "Tên", "Ngày sinh", "Di động", "Số CCCD", "Địa chỉ liên lạc", "Địa chỉ thường trú", "Email", "Mã thuế TNCN","Giới tính"};
         model.setColumnIdentifiers(column);
         model.setRowCount(0);
         tblKhachHangCN.setModel(model);
@@ -59,7 +59,7 @@ public class ClientsFrame extends javax.swing.JPanel {
                 return false;
             }
         };
-        Object[] column = {"STT", "Xưng", "Họ và tên đệm", "Tên", "Ngày sinh", "Di động", "Số CCCD", "Địa chỉ liên lạc", "Địa chỉ thường trú", "Email", "Mã thuế TNCN", "Chức vụ"};
+        Object[] column = {"STT", "Xưng", "Họ và tên đệm", "Tên", "Ngày sinh", "Di động", "Số CCCD", "Địa chỉ liên lạc", "Địa chỉ thường trú", "Email", "Mã thuế TNCN", "Chức vụ","Giới tính"};
         model.setColumnIdentifiers(column);
         model.setRowCount(0);
         tblKhachHangDN.setModel(model);
@@ -126,7 +126,8 @@ public class ClientsFrame extends javax.swing.JPanel {
                         kh.getDiaChiThuongTru(),
                         kh.getEmail(),
                         kh.getMaThue(),
-                        kh.getLoai()
+                        kh.getLoai(),
+                        kh.getGioiTinh()?"Nữ":"Nam"
                     };
                     model.addRow(row);
                 } else {
@@ -141,7 +142,11 @@ public class ClientsFrame extends javax.swing.JPanel {
                         kh.getDiaChiLienLac(),
                         kh.getDiaChiThuongTru(),
                         kh.getEmail(),
-                        kh.getMaThue(),};
+                        kh.getMaThue(),
+                        kh.getLoai(),
+                        kh.getGioiTinh()?"Nữ":"Nam"
+                    
+                    };
                     model1.addRow(row);
                 }
 
@@ -153,7 +158,8 @@ public class ClientsFrame extends javax.swing.JPanel {
 
     void edit() {
         KhachHang kh = daoKH.selectById(tblKhachHangDN.getValueAt(row, 0).toString());
-        SeeClientsFrame seeClientsFrame = new SeeClientsFrame(kh);
+        SeeClientFrame seeClientsFrame = new SeeClientFrame(kh);
+        seeClientsFrame.setVisible(true);
 
     }
 
@@ -215,7 +221,8 @@ public class ClientsFrame extends javax.swing.JPanel {
         jScrollPane6 = new javax.swing.JScrollPane();
         tblKhachHangDN = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        lblAddClients = new javax.swing.JLabel();
+        btnAddClient = new com.mycompany.qlbatdongsan.utils.PanelRound();
+        lblAddClient = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -236,7 +243,9 @@ public class ClientsFrame extends javax.swing.JPanel {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1333, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1327, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -306,8 +315,8 @@ public class ClientsFrame extends javax.swing.JPanel {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         tabs.addTab("LS giao dịch", jPanel3);
@@ -420,6 +429,9 @@ public class ClientsFrame extends javax.swing.JPanel {
             }
         ));
         tblKhachHangCN.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblKhachHangCNMouseClicked(evt);
+            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 tblKhachHangCNMousePressed(evt);
             }
@@ -437,9 +449,9 @@ public class ClientsFrame extends javax.swing.JPanel {
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Cá nhân ", jPanel7);
@@ -456,6 +468,9 @@ public class ClientsFrame extends javax.swing.JPanel {
             }
         ));
         tblKhachHangDN.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblKhachHangDNMouseClicked(evt);
+            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 tblKhachHangDNMousePressed(evt);
             }
@@ -475,7 +490,7 @@ public class ClientsFrame extends javax.swing.JPanel {
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -485,28 +500,40 @@ public class ClientsFrame extends javax.swing.JPanel {
         jLabel1.setForeground(new java.awt.Color(102, 102, 102));
         jLabel1.setText("KHÁCH HÀNG");
 
-        lblAddClients.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblAddClients.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/qlbatdongsan/images/icon/icons8-add-new-64.png"))); // NOI18N
-        lblAddClients.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnAddClient.setRoundBottonLeft(30);
+        btnAddClient.setRoundBottonRight(30);
+        btnAddClient.setRoundTopLeft(30);
+        btnAddClient.setRoundTopRight(30);
+
+        lblAddClient.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblAddClient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/qlbatdongsan/images/icon/icons8-add-new-64.png"))); // NOI18N
+        lblAddClient.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblAddClientsMouseClicked(evt);
+                lblAddClientMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                lblAddClientsMouseEntered(evt);
+                lblAddClientMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                lblAddClientsMouseExited(evt);
+                lblAddClientMouseExited(evt);
             }
         });
+
+        javax.swing.GroupLayout btnAddClientLayout = new javax.swing.GroupLayout(btnAddClient);
+        btnAddClient.setLayout(btnAddClientLayout);
+        btnAddClientLayout.setHorizontalGroup(
+            btnAddClientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblAddClient, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+        );
+        btnAddClientLayout.setVerticalGroup(
+            btnAddClientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblAddClient, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 58, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(559, 559, 559)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -516,26 +543,28 @@ public class ClientsFrame extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addContainerGap())))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblAddClients, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(282, 282, 282))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(559, 559, 559)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(597, 597, 597)
+                        .addComponent(btnAddClient, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addComponent(jLabel1)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jTabbedPane1)
-                        .addGap(146, 146, 146)
-                        .addComponent(tabs, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblAddClients)
-                        .addGap(184, 184, 184))))
+                .addGap(18, 18, 18)
+                .addComponent(jTabbedPane1)
+                .addGap(29, 29, 29)
+                .addComponent(btnAddClient, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36)
+                .addComponent(tabs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -555,24 +584,6 @@ public class ClientsFrame extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_tblKhachHangCNMousePressed
 
-    private void lblAddClientsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddClientsMouseClicked
-        // TODO add your handling code here:
-        AddProjectFrame addProjectFrame = new AddProjectFrame();
-        addProjectFrame.setVisible(true);
-    }//GEN-LAST:event_lblAddClientsMouseClicked
-
-    private void lblAddClientsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddClientsMouseEntered
-        // TODO add your handling code here:
-//        btnAddClients.setBounds(btnAddClients.getX() - 5, btnAddClients.getY() - 5, btnAddClients.getWidth() + 10, btnAddClients.getHeight() + 10);
-//        lblAddClients.setBounds(lblAddClients.getX(), lblAddClients.getY(), lblAddClients.getWidth() + 10, lblAddClients.getHeight() + 10);
-    }//GEN-LAST:event_lblAddClientsMouseEntered
-
-    private void lblAddClientsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddClientsMouseExited
-        // TODO add your handling code here:
-//        btnAddClients.setBounds(btnAddClients.getX() + 5, btnAddClients.getY() + 5, btnAddClients.getWidth() - 10, btnAddClients.getHeight() - 10);
-//        lblAddClients.setBounds(lblAddClients.getX(), lblAddClients.getY(), lblAddClients.getWidth() - 10, lblAddClients.getHeight() - 10);
-    }//GEN-LAST:event_lblAddClientsMouseExited
-
     private void btnAddClientsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddProjectMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAddProjectMouseClicked
@@ -587,8 +598,35 @@ public class ClientsFrame extends javax.swing.JPanel {
        
     }//GEN-LAST:event_btnAddProjectMouseExited
 
+    private void lblAddClientMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddClientMouseClicked
+        // TODO add your handling code here:
+        AddClientFrame addClientFrame =  new AddClientFrame();
+        addClientFrame.setVisible(true);
+    }//GEN-LAST:event_lblAddClientMouseClicked
+
+    private void lblAddClientMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddClientMouseEntered
+        // TODO add your handling code here:
+        btnAddClient.setBounds(btnAddClient.getX() - 5, btnAddClient.getY() - 5, btnAddClient.getWidth() + 10, btnAddClient.getHeight() + 10);
+        lblAddClient.setBounds(lblAddClient.getX(), lblAddClient.getY(), lblAddClient.getWidth() + 10, lblAddClient.getHeight() + 10);
+    }//GEN-LAST:event_lblAddClientMouseEntered
+
+    private void lblAddClientMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddClientMouseExited
+        // TODO add your handling code here:
+        btnAddClient.setBounds(btnAddClient.getX() + 5, btnAddClient.getY() + 5, btnAddClient.getWidth() - 10, btnAddClient.getHeight() - 10);
+        lblAddClient.setBounds(lblAddClient.getX(), lblAddClient.getY(), lblAddClient.getWidth() - 10, lblAddClient.getHeight() - 10);
+    }//GEN-LAST:event_lblAddClientMouseExited
+
+    private void tblKhachHangCNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblKhachHangCNMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tblKhachHangCNMouseClicked
+
+    private void tblKhachHangDNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblKhachHangDNMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tblKhachHangDNMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private com.mycompany.qlbatdongsan.utils.PanelRound btnAddClient;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -608,7 +646,7 @@ public class ClientsFrame extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable7;
-    private javax.swing.JLabel lblAddClients;
+    private javax.swing.JLabel lblAddClient;
     private javax.swing.JTabbedPane tabs;
     private static javax.swing.JTable tblKhachHangCN;
     private static javax.swing.JTable tblKhachHangDN;

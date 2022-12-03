@@ -36,7 +36,7 @@ public class tesst extends javax.swing.JFrame {
 //        pal_test.add(SettingFrame, c);
 //        NotesFrame.setVisible(false);
 //        SettingFrame.setVisible(false);
-//    }
+////    }
 
     /**
      * This method is called from within the constructor to initialize the form.

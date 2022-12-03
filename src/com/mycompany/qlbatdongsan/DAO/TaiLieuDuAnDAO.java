@@ -17,6 +17,8 @@ public class TaiLieuDuAnDAO extends QLBDSDAO<TaiLieuDuAN, String> {
     final String SELECT_BY_ID_SQL = "SELECT *FROM TaiLieuDuAN WHERE kyHieu = ?";
     final String SELECT_BY_ID_DA_SQL = "SELECT *FROM TaiLieuDuAN WHERE maDA = ?";
     final String SELECT_BY_ID_SPDA_SQL = "SELECT *FROM TaiLieuDuAN WHERE maSPDA = ?";
+    final String SELECT_BY_ID_KH_SQL = "SELECT *FROM TaiLieuDuAN WHERE maKH = ?";
+    final String DELETE_SQL_MA_KH = "DELETE FROM TaiLieuDuAN WHERE maKH = ?";
 
     @Override
     public void insert(TaiLieuDuAN entity) {
@@ -36,7 +38,9 @@ public class TaiLieuDuAnDAO extends QLBDSDAO<TaiLieuDuAN, String> {
     public void deleteImage(String nameImage, String id) {
         JdbcHelper.update(DELETE_SQL_Name_Image, nameImage, id);
     }
-
+    public void deleteImageWithMAKH(String id) {
+        JdbcHelper.update(DELETE_SQL_MA_KH, id);
+    }
     @Override
     public List<TaiLieuDuAN> selectAll() {
         return selectBySql(SELECT_ALL_SQL);
@@ -64,6 +68,13 @@ public class TaiLieuDuAnDAO extends QLBDSDAO<TaiLieuDuAN, String> {
             return null;
         }
         return list;
+    }
+    public TaiLieuDuAN selectByIdmaKH(String id) {
+        List<TaiLieuDuAN> list = selectBySql(SELECT_BY_ID_KH_SQL, id);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
     }
 
     @Override

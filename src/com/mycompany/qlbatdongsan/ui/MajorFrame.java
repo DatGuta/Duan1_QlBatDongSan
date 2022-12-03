@@ -4,6 +4,15 @@
  */
 package com.mycompany.qlbatdongsan.ui;
 
+import com.mycompany.qlbatdongsan.DAO.ChuyenNhuongDAO;
+import com.mycompany.qlbatdongsan.DAO.HopDongDAO;
+import com.mycompany.qlbatdongsan.DAO.PhieuDAO;
+import com.mycompany.qlbatdongsan.Entity.ChuyenNhuong;
+import com.mycompany.qlbatdongsan.Entity.HopDong;
+import com.mycompany.qlbatdongsan.Entity.Phieu;
+import com.mycompany.qlbatdongsan.utils.MsgBox;
+import com.mycompany.qlbatdongsan.utils.XDate;
+import java.util.List;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -14,6 +23,9 @@ import javax.swing.table.TableRowSorter;
  */
 public class MajorFrame extends javax.swing.JPanel {
 
+    PhieuDAO daoPh = new PhieuDAO();
+    HopDongDAO daoHD = new HopDongDAO();
+    ChuyenNhuongDAO daoCN = new ChuyenNhuongDAO();
     DefaultTableModel model;
 
     /**
@@ -23,6 +35,8 @@ public class MajorFrame extends javax.swing.JPanel {
         initComponents();
         initTableHopDong();
         initTablePhieu();
+        fillToTableHopDong();
+        fillToTablePhieu();
     }
 
     private void initTablePhieu() {
@@ -41,23 +55,74 @@ public class MajorFrame extends javax.swing.JPanel {
         tblHopDong.setModel(model);
     }
 
+    private void fillToTablePhieu() {
+        DefaultTableModel model = (DefaultTableModel) tblPhieu.getModel();
+        model.setRowCount(0);
+        try {
+            List<Phieu> list = daoPh.selectAll();
+            for (Phieu ph : list) {
+                Object[] row = {
+                    ph.getMaPhieu(),
+                    XDate.toString(ph.getNgayCoc(), "dd/mm/yyyy"),
+                    ph.getMaSPDA(),
+                    ph.getDonGia(),
+                    ph.getDienTich(),
+                    ph.getSoLoCoc(),
+                    ph.getThanhTien(),
+                    ph.getTienCoc(),
+                    ph.getMaNV(),
+                    ph.getMaKH(),
+                    ph.getLoaiPhieu()
+                };
+                model.addRow(row);
+            }
+        } catch (Exception e) {
+            MsgBox.alert(this, "Lỗi truy vấn dữ liệu");
+        }
+    }
+
+    private void fillToTableHopDong() {
+        DefaultTableModel model = (DefaultTableModel) tblHopDong.getModel();
+        model.setRowCount(0);
+        try {
+            List<HopDong> list = daoHD.selectAll();
+            for (HopDong hd : list) {
+                ChuyenNhuong cn = daoCN.selectBysoHopDong(hd.getSoHopDong());
+                Object[] row = {
+                    hd.getSTT(),
+                    hd.getSoHopDong(),
+                    XDate.toString(hd.getNgayKy(), "MM/dd/yyyy"),
+                    hd.getSoPhieu(),
+                    hd.getTrangThai(),
+                    cn.getMaCN(),
+                    hd.getMaKH(),
+                    hd.getMaSPDA(),
+                    cn.getChietKhau(),
+                    cn.getThoiHan(),};
+                model.addRow(row);
+            }
+        } catch (Exception e) {
+            MsgBox.alert(this, "Lỗi truy vấn dữ liệu");
+        }
+    }
+
     public static void Search(String str) {
         if (str.length() > 0) {
-            if (tblHopDong!=null) {
+            if (tblHopDong != null) {
                 DefaultTableModel model = (DefaultTableModel) tblHopDong.getModel();
                 TableRowSorter<DefaultTableModel> trs = new TableRowSorter<>(model);
                 tblHopDong.setRowSorter(trs);
                 trs.setRowFilter(RowFilter.regexFilter(str));
-            }else{
+            } else {
                 return;
             }
             //Table Phieu va Hơp Dong
-            if (tblPhieu!=null) {
+            if (tblPhieu != null) {
                 DefaultTableModel model1 = (DefaultTableModel) tblPhieu.getModel();
                 TableRowSorter<DefaultTableModel> trs1 = new TableRowSorter<>(model1);
                 tblPhieu.setRowSorter(trs1);
                 trs1.setRowFilter(RowFilter.regexFilter(str));
-            }else{
+            } else {
                 return;
             }
         }
@@ -72,28 +137,18 @@ public class MajorFrame extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        tabs = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblHopDong = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblPhieu = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
+        btnAddMajor = new com.mycompany.qlbatdongsan.utils.PanelRound();
+        lblAddMajor = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1315, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 695, Short.MAX_VALUE)
-        );
 
         tblHopDong.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -112,30 +167,20 @@ public class MajorFrame extends javax.swing.JPanel {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1304, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(17, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap()))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1315, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 540, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(148, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Hợp đồng", jPanel2);
+        tabs.addTab("Hợp đồng", jPanel2);
 
         tblPhieu.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -164,27 +209,66 @@ public class MajorFrame extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 646, Short.MAX_VALUE)
-                .addGap(55, 55, 55))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Phiếu", jPanel1);
+        tabs.addTab("Phiếu", jPanel1);
 
         jLabel1.setFont(new java.awt.Font("Serif", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(102, 102, 102));
         jLabel1.setText("NGHIỆP VỤ");
+
+        btnAddMajor.setRoundBottonLeft(30);
+        btnAddMajor.setRoundBottonRight(30);
+        btnAddMajor.setRoundTopLeft(30);
+        btnAddMajor.setRoundTopRight(30);
+
+        lblAddMajor.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblAddMajor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/qlbatdongsan/images/icon/icons8-add-new-64.png"))); // NOI18N
+        lblAddMajor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblAddMajorMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lblAddMajorMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lblAddMajorMouseExited(evt);
+            }
+        });
+
+        javax.swing.GroupLayout btnAddMajorLayout = new javax.swing.GroupLayout(btnAddMajor);
+        btnAddMajor.setLayout(btnAddMajorLayout);
+        btnAddMajorLayout.setHorizontalGroup(
+            btnAddMajorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btnAddMajorLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblAddMajor, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        btnAddMajorLayout.setVerticalGroup(
+            btnAddMajorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblAddMajor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 58, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jTabbedPane1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(tabs))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(557, 557, 557)
+                        .addComponent(jLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(557, 557, 557)
-                .addComponent(jLabel1)
+                .addGap(572, 572, 572)
+                .addComponent(btnAddMajor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -193,20 +277,58 @@ public class MajorFrame extends javax.swing.JPanel {
                 .addGap(16, 16, 16)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addComponent(jTabbedPane1)
-                .addContainerGap())
+                .addComponent(tabs, javax.swing.GroupLayout.PREFERRED_SIZE, 542, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                .addComponent(btnAddMajor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void lblAddMajorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddMajorMouseClicked
+        // TODO add your handling code here:
+        if (tabs.getSelectedIndex() == 2) {
+            AddMajorFrame addMajorFrame = new AddMajorFrame();
+            addMajorFrame.setVisible(true);
+        } else {
+            AddMajorFrame1 addMajorFrame1 = new AddMajorFrame1();
+            addMajorFrame1.setVisible(true);
+        }
+    }//GEN-LAST:event_lblAddMajorMouseClicked
+
+    private void lblAddMajorMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddMajorMouseEntered
+        // TODO add your handling code here:
+        btnAddMajor.setBounds(btnAddMajor.getX() - 5, btnAddMajor.getY() - 5, btnAddMajor.getWidth() + 10, btnAddMajor.getHeight() + 10);
+        lblAddMajor.setBounds(lblAddMajor.getX(), lblAddMajor.getY(), lblAddMajor.getWidth() + 10, lblAddMajor.getHeight() + 10);
+    }//GEN-LAST:event_lblAddMajorMouseEntered
+
+    private void lblAddMajorMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddMajorMouseExited
+        // TODO add your handling code here:
+        btnAddMajor.setBounds(btnAddMajor.getX() + 5, btnAddMajor.getY() + 5, btnAddMajor.getWidth() - 10, btnAddMajor.getHeight() - 10);
+        lblAddMajor.setBounds(lblAddMajor.getX(), lblAddMajor.getY(), lblAddMajor.getWidth() - 10, lblAddMajor.getHeight() - 10);
+    }//GEN-LAST:event_lblAddMajorMouseExited
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private com.mycompany.qlbatdongsan.utils.PanelRound btnAddMajor;
+    private com.mycompany.qlbatdongsan.utils.PanelRound btnAddProject;
+    private com.mycompany.qlbatdongsan.utils.PanelRound btnAddProject1;
+    private com.mycompany.qlbatdongsan.utils.PanelRound btnAddProject2;
+    private com.mycompany.qlbatdongsan.utils.PanelRound btnAddProject3;
+    private com.mycompany.qlbatdongsan.utils.PanelRound btnAddProject4;
+    private com.mycompany.qlbatdongsan.utils.PanelRound btnAddProject5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JLabel lblAddMajor;
+    private javax.swing.JLabel lblAddProject;
+    private javax.swing.JLabel lblAddProject1;
+    private javax.swing.JLabel lblAddProject2;
+    private javax.swing.JLabel lblAddProject3;
+    private javax.swing.JLabel lblAddProject4;
+    private javax.swing.JLabel lblAddProject5;
+    private javax.swing.JTabbedPane tabs;
     private static javax.swing.JTable tblHopDong;
     private static javax.swing.JTable tblPhieu;
     // End of variables declaration//GEN-END:variables

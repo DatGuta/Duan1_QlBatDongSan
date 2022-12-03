@@ -1,7 +1,5 @@
 package com.mycompany.qlbatdongsan.DAO;
 
-
-
 import DAO.QLBDSDAO;
 import com.mycompany.qlbatdongsan.Entity.NhanVien;
 import com.mycompany.qlbatdongsan.utils.JdbcHelper;
@@ -18,6 +16,7 @@ public class NhanVienDAO extends QLBDSDAO<NhanVien, String> {
     final String DELETE_SQL = "DELETE FROM NhanVien WHERE maNV = ?";
     final String SELECT_ALL_SQL = "SELECT * FROM NhanVien";
     final String SELECT_BY_ID_SQL = "SELECT *FROM NhanVien WHERE maNV = ?";
+    final String SELECT_BY_qrcode_SQL = "SELECT *FROM NhanVien WHERE maQR = ?";
 
     @Override
     public void insert(NhanVien entity) {
@@ -44,6 +43,14 @@ public class NhanVienDAO extends QLBDSDAO<NhanVien, String> {
     @Override
     public NhanVien selectById(String id) {
         List<NhanVien> list = selectBySql(SELECT_BY_ID_SQL, id);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
+    }
+
+    public NhanVien selectBymaQR(String id) {
+        List<NhanVien> list = selectBySql(SELECT_BY_qrcode_SQL, id);
         if (list.isEmpty()) {
             return null;
         }

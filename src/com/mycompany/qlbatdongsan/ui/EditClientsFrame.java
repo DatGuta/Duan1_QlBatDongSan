@@ -43,7 +43,7 @@ public class EditClientsFrame extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(1000, Short.MAX_VALUE)
+                .addContainerGap(1280, Short.MAX_VALUE)
                 .addComponent(jButton2)
                 .addGap(40, 40, 40)
                 .addComponent(jButton1)
@@ -52,7 +52,7 @@ public class EditClientsFrame extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(482, Short.MAX_VALUE)
+                .addGap(930, 930, 930)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
