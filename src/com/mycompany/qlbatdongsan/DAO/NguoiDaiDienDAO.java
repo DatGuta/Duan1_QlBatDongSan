@@ -1,19 +1,19 @@
 package com.mycompany.qlbatdongsan.DAO;
 
 
-import DAO.QLBDSDAO;
 import com.mycompany.qlbatdongsan.Entity.NguoiDaiDien;
 import com.mycompany.qlbatdongsan.utils.JdbcHelper;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NguoiDaiDienDAO extends QLBDSDAO<NguoiDaiDien, Integer>{
-     final String INSERT_SQL = "INSERT INTO NguoiDaiDien (maDD, hoTen, SdtCoDinh, SdtDiDong, Email, diaChiLienLac, diaChiThuongTru, gioiTinh, ngaySinh) VALUES (?,?,?,?,?,?,?,?,?,?)";
-    final String UPDATE_SQL = "UPDATE NguoiDaiDien SET hoTen = ?, SdtCoDinh = ?, SdtDiDong = ?, Email = ?, diaChiLienLac = ?, diaChiThuongTru = ?, gioiTinh = ?, ngaySinh = ? WHERE soHieu = ?";
+public class NguoiDaiDienDAO extends QLBDSDAO<NguoiDaiDien, String>{
+     final String INSERT_SQL = "INSERT INTO NguoiDaiDien  VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+    final String UPDATE_SQL = "UPDATE NguoiDaiDien SET hoTen = ?, SdtCoDinh = ?, SdtDiDong = ?, Email = ?, diaChiLienLac = ?, diaChiThuongTru = ?, gioiTinh = ?, ngaySinh = ?,maKH=? WHERE soHieu = ?";
     final String DELETE_SQL = "DELETE FROM NguoiDaiDien WHERE maDD = ?";
     final String SELECT_ALL_SQL = "SELECT * FROM NguoiDaiDien";
     final String SELECT_BY_ID_SQL = "SELECT *FROM NguoiDaiDien WHERE maDD = ?";
+    final String SELECT_BY_maKH_SQL = "SELECT *FROM NguoiDaiDien WHERE maKH = ?";
 
     @Override
     public void insert(NguoiDaiDien entity) {
@@ -28,7 +28,7 @@ public class NguoiDaiDienDAO extends QLBDSDAO<NguoiDaiDien, Integer>{
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(String id) {
         JdbcHelper.update(DELETE_SQL, id);
     }
 
@@ -38,12 +38,19 @@ public class NguoiDaiDienDAO extends QLBDSDAO<NguoiDaiDien, Integer>{
     }
 
     @Override
-    public NguoiDaiDien selectById(Integer id) {
+    public NguoiDaiDien selectById(String id) {
         List<NguoiDaiDien> list = selectBySql(SELECT_BY_ID_SQL, id);
         if (list.isEmpty()) {
             return null;
         }
         return list.get(0);
+    }
+     public List<NguoiDaiDien> selectBymaKH(String id) {
+        List<NguoiDaiDien> list = selectBySql(SELECT_BY_maKH_SQL, id);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list;
     }
 
     @Override
@@ -53,7 +60,7 @@ public class NguoiDaiDienDAO extends QLBDSDAO<NguoiDaiDien, Integer>{
             ResultSet rs = JdbcHelper.query(sql, args);
             while (rs.next()) {
                 NguoiDaiDien entity = new NguoiDaiDien();
-                entity.setMaDD(rs.getInt("maDD"));
+                entity.setMaDD(rs.getString("maDD"));
                 entity.setHoTen(rs.getString("hoTen"));
                 entity.setSdtCoDinh(rs.getString("SdtCoDinh"));
                 entity.setSdtDiDong(rs.getString("SdtDiDong"));
@@ -72,4 +79,6 @@ public class NguoiDaiDienDAO extends QLBDSDAO<NguoiDaiDien, Integer>{
         }
 
     }
+
+
 }

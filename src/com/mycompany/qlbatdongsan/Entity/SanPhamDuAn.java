@@ -1,29 +1,46 @@
-
 package com.mycompany.qlbatdongsan.Entity;
 
-import java.util.Date;
-
 public class SanPhamDuAn {
+
     private String maSPDA;
     private String maDA;
-    private String tenDA;
-    private String diaChi;
-    private Float dienTich;
-    private int soGiayPhep;
-    private Date ngayCap;
-    private String noiCap;
-    private String loaiDA;
-    private String maNVPhuTrach;
-    private Date ngayDang;
-    private int maSGD;
+    private String tenSP;
+    private double dienTich;
+    private int PhongBepKhach;
+    private int PhongNgu;
+    private int WC;
+    private double Gia;
+    private String LoaiSP;
     private String trangThai;
+    private String tienNghi;
+    private String chuSoHuu;
+    private String tgSoHuu;
+    private int SoTang;
+    private int thuocTang;
+    private int DonViPhanPhoi;
+    private String Toa;
 
-    public String getTrangThai() {
-        return trangThai;
+    public SanPhamDuAn(String maSPDA, String maDA, String tenSP, double dienTich, int PhongBepKhach, int PhongNgu, int WC, double Gia, String LoaiSP, String trangThai, String tienNghi, String chuSoHuu, String tgSoHuu, int SoTang, int thuocTang, int DonViPhanPhoi, String Toa) {
+        this.maSPDA = maSPDA;
+        this.maDA = maDA;
+        this.tenSP = tenSP;
+        this.dienTich = dienTich;
+        this.PhongBepKhach = PhongBepKhach;
+        this.PhongNgu = PhongNgu;
+        this.WC = WC;
+        this.Gia = Gia;
+        this.LoaiSP = LoaiSP;
+        this.trangThai = trangThai;
+        this.tienNghi = tienNghi;
+        this.chuSoHuu = chuSoHuu;
+        this.tgSoHuu = tgSoHuu;
+        this.SoTang = SoTang;
+        this.thuocTang = thuocTang;
+        this.DonViPhanPhoi = DonViPhanPhoi;
+        this.Toa = Toa;
     }
 
-    public void setTrangThai(String trangThai) {
-        this.trangThai = trangThai;
+    public SanPhamDuAn() {
     }
 
     public String getMaSPDA() {
@@ -42,84 +59,124 @@ public class SanPhamDuAn {
         this.maDA = maDA;
     }
 
-    public String getTenDA() {
-        return tenDA;
+    public String getTenSP() {
+        return tenSP;
     }
 
-    public void setTenDA(String tenDA) {
-        this.tenDA = tenDA;
+    public void setTenSP(String tenSP) {
+        this.tenSP = tenSP;
     }
 
-    public String getDiaChi() {
-        return diaChi;
-    }
-
-    public void setDiaChi(String diaChi) {
-        this.diaChi = diaChi;
-    }
-
-    public Float getDienTich() {
+    public double getDienTich() {
         return dienTich;
     }
 
-    public void setDienTich(Float dienTich) {
+    public void setDienTich(double dienTich) {
         this.dienTich = dienTich;
     }
 
-    public int getSoGiayPhep() {
-        return soGiayPhep;
+    public int getPhongBepKhach() {
+        return PhongBepKhach;
     }
 
-    public void setSoGiayPhep(int soGiayPhep) {
-        this.soGiayPhep = soGiayPhep;
+    public void setPhongBepKhach(int PhongBepKhach) {
+        this.PhongBepKhach = PhongBepKhach;
     }
 
-    public Date getNgayCap() {
-        return ngayCap;
+    public int getPhongNgu() {
+        return PhongNgu;
     }
 
-    public void setNgayCap(Date ngayCap) {
-        this.ngayCap = ngayCap;
+    public void setPhongNgu(int PhongNgu) {
+        this.PhongNgu = PhongNgu;
     }
 
-    public String getNoiCap() {
-        return noiCap;
+    public int getWC() {
+        return WC;
     }
 
-    public void setNoiCap(String noiCap) {
-        this.noiCap = noiCap;
+    public void setWC(int WC) {
+        this.WC = WC;
     }
 
-    public String getLoaiDA() {
-        return loaiDA;
+    public double getGia() {
+        return Gia;
     }
 
-    public void setLoaiDA(String loaiDA) {
-        this.loaiDA = loaiDA;
+    public void setGia(double Gia) {
+        this.Gia = Gia;
     }
 
-    public String getMaNVPhuTrach() {
-        return maNVPhuTrach;
+    public String getLoaiSP() {
+        return LoaiSP;
     }
 
-    public void setMaNVPhuTrach(String maNVPhuTrach) {
-        this.maNVPhuTrach = maNVPhuTrach;
+    public void setLoaiSP(String LoaiSP) {
+        this.LoaiSP = LoaiSP;
     }
 
-    public Date getNgayDang() {
-        return ngayDang;
+    public String getTrangThai() {
+        return trangThai;
     }
 
-    public void setNgayDang(Date ngayDang) {
-        this.ngayDang = ngayDang;
+    public void setTrangThai(String trangThai) {
+        this.trangThai = trangThai;
     }
 
-    public int getMaSGD() {
-        return maSGD;
+    public String getTienNghi() {
+        return tienNghi;
     }
 
-    public void setMaSGD(int maSGD) {
-        this.maSGD = maSGD;
+    public void setTienNghi(String tienNghi) {
+        this.tienNghi = tienNghi;
     }
-    
+
+    public String getChuSoHuu() {
+        return chuSoHuu;
+    }
+
+    public void setChuSoHuu(String chuSoHuu) {
+        this.chuSoHuu = chuSoHuu;
+    }
+
+    public String getTgSoHuu() {
+        return tgSoHuu;
+    }
+
+    public void setTgSoHuu(String tgSoHuu) {
+        this.tgSoHuu = tgSoHuu;
+    }
+
+    public int getSoTang() {
+        return SoTang;
+    }
+
+    public void setSoTang(int SoTang) {
+        this.SoTang = SoTang;
+    }
+
+    public int getThuocTang() {
+        return thuocTang;
+    }
+
+    public void setThuocTang(int thuocTang) {
+        this.thuocTang = thuocTang;
+    }
+
+    public int getDonViPhanPhoi() {
+        return DonViPhanPhoi;
+    }
+
+    public void setDonViPhanPhoi(int DonViPhanPhoi) {
+        this.DonViPhanPhoi = DonViPhanPhoi;
+    }
+
+    public String getToa() {
+        return Toa;
+    }
+
+    public void setToa(String Toa) {
+        this.Toa = Toa;
+    }
+
 }

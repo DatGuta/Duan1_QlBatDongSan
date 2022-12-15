@@ -1,7 +1,6 @@
 package com.mycompany.qlbatdongsan.DAO;
 
 
-import DAO.QLBDSDAO;
 import com.mycompany.qlbatdongsan.utils.JdbcHelper;
 import com.mycompany.qlbatdongsan.Entity.SanPhamDuAn;
 import java.sql.ResultSet;
@@ -10,22 +9,23 @@ import java.util.List;
 
 public class SanPhamDuAnDAO extends QLBDSDAO<SanPhamDuAn, String> {
 
-    final String INSERT_SQL = "INSERT INTO SanPhamDuAn (maSPDA, maDA, tenDA, diaChi, dienTich, soGiayPhep, ngayCap, noiCap, loaiDA, maNVPhuTrach, ngayDang, maSGD,trangThai) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
-    final String UPDATE_SQL = "UPDATE SanPhamDuAn SET  maDA=?, tenDA=?, diaChi=?, dienTich=?, soGiayPhep=?, ngayCap=?, noiCap=?, loaiDA=?, maNVPhuTrach=?, ngayDang=?, maSGD=?,trangThai=? WHERE maSPDA = ?";
+    final String INSERT_SQL = "INSERT INTO SanPhamDuAn  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    final String UPDATE_SQL = "UPDATE SanPhamDuAn SET  maDA=?, tenSanPham=?, dienTich=?, PhongBepKhach=?, PhongNgu=?, WC=?, Gia=?, LoaiSP=?, TrangThai=?, TienNghi=?, ChuSoHuu=?, TGSoHuu=?, SoTang=?, ThuocTang=?, DonViPhanPhoi=?, Toa=? WHERE maSPDA = ?";
     final String DELETE_SQL = "DELETE FROM SanPhamDuAn WHERE maSPDA = ?";
     final String SELECT_ALL_SQL = "SELECT * FROM SanPhamDuAn";
     final String SELECT_BY_ID_SQL = "SELECT *FROM SanPhamDuAn WHERE maSPDA = ?";
-
+    final String SELECT_BY_MA_DA_SQL = "SELECT *FROM SanPhamDuAn WHERE maDA = ?";
+    final String SELECT_BY_MA_SGD_SQL = "SELECT *FROM SanPhamDuAn WHERE maSGD = ?";
+    final String SELECT_BY_MA_TOA_SQL = "SELECT *FROM SanPhamDuAn WHERE Toa = ? and maDA=?";
+    
     @Override
     public void insert(SanPhamDuAn entity) {
-        JdbcHelper.update(INSERT_SQL, entity.getMaSPDA(), entity.getMaDA(), entity.getTenDA(), entity.getDiaChi(), entity.getDienTich(), entity.getSoGiayPhep(), entity.getNgayCap(),
-                entity.getNoiCap(), entity.getLoaiDA(), entity.getMaNVPhuTrach(), entity.getNgayDang(), entity.getMaSGD(),entity.getTrangThai());
+        JdbcHelper.update(INSERT_SQL, entity.getMaSPDA(),entity.getMaDA(),entity.getTenSP(),entity.getDienTich(),entity.getPhongBepKhach(),entity.getPhongNgu(),entity.getWC(),entity.getGia(),entity.getLoaiSP(),entity.getTrangThai(),entity.getTienNghi(),entity.getChuSoHuu(),entity.getTgSoHuu(),entity.getSoTang(),entity.getThuocTang(),entity.getDonViPhanPhoi(),entity.getToa());
     }
 
     @Override
     public void update(SanPhamDuAn entity) {
-        JdbcHelper.update(UPDATE_SQL, entity.getMaDA(), entity.getTenDA(), entity.getDiaChi(), entity.getDienTich(), entity.getSoGiayPhep(), entity.getNgayCap(),
-                entity.getNoiCap(), entity.getLoaiDA(), entity.getMaNVPhuTrach(), entity.getNgayDang(), entity.getMaSGD(),entity.getTrangThai(), entity.getMaSPDA());
+        JdbcHelper.update(UPDATE_SQL,entity.getMaDA(),entity.getTenSP(),entity.getDienTich(),entity.getPhongBepKhach(),entity.getPhongNgu(),entity.getWC(),entity.getGia(),entity.getLoaiSP(),entity.getTrangThai(),entity.getTienNghi(),entity.getChuSoHuu(),entity.getTgSoHuu(),entity.getSoTang(),entity.getThuocTang(),entity.getDonViPhanPhoi(),entity.getToa(), entity.getMaSPDA());
     }
 
     @Override
@@ -46,6 +46,27 @@ public class SanPhamDuAnDAO extends QLBDSDAO<SanPhamDuAn, String> {
         }
         return list.get(0);
     }
+    public List<SanPhamDuAn> selectByMaSGD(String id) {
+        List<SanPhamDuAn> list = selectBySql(SELECT_BY_MA_SGD_SQL, id);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list;
+    }
+    public List<SanPhamDuAn> selectByMaDA(String id) {
+        List<SanPhamDuAn> list = selectBySql(SELECT_BY_MA_DA_SQL, id);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list;
+    }
+    public List<SanPhamDuAn> selectByMaToa(String id,String maDA) {
+        List<SanPhamDuAn> list = selectBySql(SELECT_BY_MA_TOA_SQL, id, maDA);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list;
+    }
 
     @Override
     public List<SanPhamDuAn> selectBySql(String sql, Object... args) {
@@ -55,18 +76,22 @@ public class SanPhamDuAnDAO extends QLBDSDAO<SanPhamDuAn, String> {
             while (rs.next()) {
                 SanPhamDuAn entity = new SanPhamDuAn();
                 entity.setMaSPDA(rs.getString("maSPDA"));
-                entity.setMaDA(rs.getString("maDa"));
-                entity.setTenDA(rs.getString("tenDA"));
-                entity.setDiaChi(rs.getString("diaChi"));
-                entity.setDienTich(rs.getFloat("dienTich"));
-                entity.setSoGiayPhep(rs.getInt("soGiayPhep"));
-                entity.setNgayCap(rs.getDate("ngayCap"));
-                entity.setNoiCap(rs.getString("noiCap"));
-                entity.setLoaiDA(rs.getString("loaiDA"));
-                entity.setMaNVPhuTrach(rs.getString("maNVPhuTrach"));
-                entity.setNgayDang(rs.getDate("ngayDang"));
-                entity.setMaSGD(rs.getInt("maSGD"));
-                entity.setTrangThai(rs.getString("trangThai"));
+                entity.setMaDA(rs.getString("maDA"));
+                entity.setTenSP(rs.getString("tenSanPham"));
+                entity.setDienTich(rs.getDouble("dienTich"));
+                entity.setPhongBepKhach(rs.getInt("PhongBepKhach"));
+                entity.setPhongNgu(rs.getInt("PhongNgu"));
+                entity.setWC(rs.getInt("WC"));
+                entity.setGia(rs.getDouble("Gia"));
+                entity.setLoaiSP(rs.getString("LoaiSP"));
+                entity.setTrangThai(rs.getString("TrangThai"));
+                entity.setTienNghi(rs.getString("TienNghi"));
+                entity.setChuSoHuu(rs.getString("ChuSoHuu"));
+                entity.setTgSoHuu(rs.getString("TGSoHuu"));
+                entity.setSoTang(rs.getInt("SoTang"));
+                entity.setThuocTang(rs.getInt("ThuocTang"));
+                entity.setDonViPhanPhoi(rs.getInt("DonViPhanPhoi"));
+                entity.setToa(rs.getString("Toa"));
                 list.add(entity);
             }
             rs.getStatement().getConnection().close();

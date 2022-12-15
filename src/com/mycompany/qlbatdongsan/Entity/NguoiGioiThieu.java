@@ -4,7 +4,7 @@ package com.mycompany.qlbatdongsan.Entity;
 import java.util.Date;
 
 public class NguoiGioiThieu {
-    private int maGT;
+    private String maGT;
     private String hoTen;
     private String sdtCoDinh;
     private String sdtDiDong;
@@ -14,12 +14,21 @@ public class NguoiGioiThieu {
     private Boolean gioiTinh;
     private Date ngaySinh;
     private String maKH;
+    private double hoaHong;
 
-    public int getMaGT() {
+    public double getHoaHong() {
+        return hoaHong;
+    }
+
+    public void setHoaHong(double hoaHong) {
+        this.hoaHong = hoaHong;
+    }
+
+    public String getMaGT() {
         return maGT;
     }
 
-    public void setMaGT(int maGT) {
+    public void setMaGT(String maGT) {
         this.maGT = maGT;
     }
 

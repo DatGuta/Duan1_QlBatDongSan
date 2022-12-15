@@ -1,8 +1,9 @@
+package com.mycompany.qlbatdongsan.DAO;
+
 
 
 
 import com.mycompany.qlbatdongsan.Entity.LichSuGiaoDich;
-import DAO.QLBDSDAO;
 import com.mycompany.qlbatdongsan.utils.JdbcHelper;
 import com.mycompany.qlbatdongsan.Entity.LichSuGiaoDich;
 import java.sql.ResultSet;
@@ -10,13 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LichSuGiaoDichDAO extends QLBDSDAO<LichSuGiaoDich, String> {
-    final String INSERT_SQL = "INSERT INTO LichSuGiaoDich (maLSGD, ngayGD, soGD, loaiGD, maSPDA, dienTich, thanhTien, dienGiai"
-            + ", nhanVien, sanGiaoDich, maKH) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
-    final String UPDATE_SQL = "UPDATE LichSuGiaoDich SET ngayGD = ?, soG = ?, loaiGD = ?, maSPDA = ?, dienTich = ?, thanhTien = ?, dienGiai= ?"
+    final String INSERT_SQL = "INSERT INTO LichSuGiaoDich  VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+    final String UPDATE_SQL = "UPDATE LichSuGiaoDich SET ngayGD = ?, maGD = ?, loaiGD = ?, maSPDA = ?, dienTich = ?, thanhTien = ?, dienGiai= ?"
             + ", nhanVien = ?, sanGiaoDich = ?, maKH WHERE maLSGD = ?";
     final String DELETE_SQL = "DELETE FROM LichSuGiaoDich WHERE maLSGD = ?";
     final String SELECT_ALL_SQL = "SELECT * FROM LichSuGiaoDich";
     final String SELECT_BY_ID_SQL = "SELECT *FROM LichSuGiaoDich WHERE maLSGD = ?";
+    final String SELECT_BY_maKH_SQL = "SELECT *FROM LichSuGiaoDich WHERE maKH = ?";
 
     @Override
     public void insert(LichSuGiaoDich entity) {
@@ -48,6 +49,13 @@ public class LichSuGiaoDichDAO extends QLBDSDAO<LichSuGiaoDich, String> {
         }
         return list.get(0);
     }
+    public List<LichSuGiaoDich> selectBymaKH(String id) {
+        List<LichSuGiaoDich> list = selectBySql(SELECT_BY_maKH_SQL, id);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list;
+    }
 
     @Override
     public List<LichSuGiaoDich> selectBySql(String sql, Object... args) {
@@ -58,7 +66,7 @@ public class LichSuGiaoDichDAO extends QLBDSDAO<LichSuGiaoDich, String> {
                 LichSuGiaoDich entity = new LichSuGiaoDich();
                 entity.setMaSPDA(rs.getString("maSPDA"));
                 entity.setNgayGD(rs.getDate("ngayGD"));
-                entity.setSoGD(rs.getInt("soGD"));
+                entity.setSoGD(rs.getString("maGD"));
                 entity.setLoaiGD(rs.getString("loaiGD"));
                 entity.setMaSPDA(rs.getString("maSPDA"));
                 entity.setDienTich(rs.getFloat("dienTich"));

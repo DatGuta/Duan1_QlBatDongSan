@@ -2,7 +2,6 @@ package com.mycompany.qlbatdongsan.DAO;
 
 
 
-import DAO.QLBDSDAO;
 import com.mycompany.qlbatdongsan.utils.JdbcHelper;
 import com.mycompany.qlbatdongsan.Entity.KhachHang;
 import com.mycompany.qlbatdongsan.Entity.QuanLyDuAn;
@@ -11,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class KhachHangDAO extends QLBDSDAO<KhachHang, String>{
-    final String INSERT_SQL = "INSERT INTO KhachHang (maKH, STT, danhXung, hoTenDem, ten, ngaySinh, Sdt, diaChiLienLac, diaChiThuongTru, Email, maThue, loai, CCCD, gioiTinh) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    final String INSERT_SQL = "INSERT INTO KhachHang  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     final String UPDATE_SQL = "UPDATE KhachHang SET STT = ?, danhXung= ?, hoTenDem = ?, ten = ?, ngaySinh = ?, Sdt = ?, diaChiLienLac = ?, diaChiThuongTru= ? , Email = ?, maThue = ?, loai = ?, CCCD = ?,"
             + " gioiTinh = ? WHERE maKH = ?";
     final String DELETE_SQL = "DELETE FROM KhachHang WHERE maKH = ?";

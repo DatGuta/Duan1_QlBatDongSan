@@ -2,7 +2,6 @@ package com.mycompany.qlbatdongsan.DAO;
 
 
 
-import DAO.QLBDSDAO;
 import com.mycompany.qlbatdongsan.utils.JdbcHelper;
 import com.mycompany.qlbatdongsan.Entity.LichSuThanhToan;
 import java.sql.ResultSet;
@@ -15,6 +14,7 @@ public class LichThanhToanDAO extends QLBDSDAO<LichSuThanhToan, String> {
     final String DELETE_SQL = "DELETE FROM LichSuThanhToan WHERE maTT = ?";
     final String SELECT_ALL_SQL = "SELECT * FROM LichSuThanhToan";
     final String SELECT_BY_ID_SQL = "SELECT *FROM LichSuThanhToan WHERE maTT = ?";
+    final String SELECT_BY_maKH_SQL = "SELECT *FROM LichSuThanhToan WHERE maKH = ?";
 
     @Override
     public void insert(LichSuThanhToan entity) {
@@ -46,7 +46,13 @@ public class LichThanhToanDAO extends QLBDSDAO<LichSuThanhToan, String> {
         }
         return list.get(0);
     }
-
+    public List<LichSuThanhToan> selectBymaKH(String id) {
+        List<LichSuThanhToan> list = selectBySql(SELECT_BY_maKH_SQL, id);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list;
+    }
     @Override
     public List<LichSuThanhToan> selectBySql(String sql, Object... args) {
         List<LichSuThanhToan> list = new ArrayList<LichSuThanhToan>();

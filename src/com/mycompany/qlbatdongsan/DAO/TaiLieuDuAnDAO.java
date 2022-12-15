@@ -1,6 +1,5 @@
 package com.mycompany.qlbatdongsan.DAO;
 
-import DAO.QLBDSDAO;
 import com.mycompany.qlbatdongsan.utils.JdbcHelper;
 import com.mycompany.qlbatdongsan.Entity.TaiLieuDuAN;
 import java.sql.ResultSet;
@@ -19,6 +18,7 @@ public class TaiLieuDuAnDAO extends QLBDSDAO<TaiLieuDuAN, String> {
     final String SELECT_BY_ID_SPDA_SQL = "SELECT *FROM TaiLieuDuAN WHERE maSPDA = ?";
     final String SELECT_BY_ID_KH_SQL = "SELECT *FROM TaiLieuDuAN WHERE maKH = ?";
     final String DELETE_SQL_MA_KH = "DELETE FROM TaiLieuDuAN WHERE maKH = ?";
+    final String SELECT_BY_ID_DA_NAME_IMAGE_SQL = "SELECT *FROM TaiLieuDuAN WHERE maDA = ? and tenTaiLieu=?";
 
     @Override
     public void insert(TaiLieuDuAN entity) {
@@ -77,6 +77,13 @@ public class TaiLieuDuAnDAO extends QLBDSDAO<TaiLieuDuAN, String> {
         return list.get(0);
     }
 
+    public TaiLieuDuAN selectByIdmaToa(String id,String tenTaiLieu) {
+        List<TaiLieuDuAN> list = selectBySql(SELECT_BY_ID_DA_NAME_IMAGE_SQL, id,tenTaiLieu);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
+    }
     @Override
     public List<TaiLieuDuAN> selectBySql(String sql, Object... args) {
         List<TaiLieuDuAN> list = new ArrayList<TaiLieuDuAN>();

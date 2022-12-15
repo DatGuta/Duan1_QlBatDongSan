@@ -1,7 +1,6 @@
 package com.mycompany.qlbatdongsan.DAO;
 
 
-import DAO.QLBDSDAO;
 import com.mycompany.qlbatdongsan.utils.JdbcHelper;
 import com.mycompany.qlbatdongsan.Entity.LichSuLamViec;
 import java.sql.ResultSet;
@@ -15,6 +14,7 @@ public class LichSuLamViecDAO extends QLBDSDAO<LichSuLamViec, String> {
     final String DELETE_SQL = "DELETE FROM LichSuLamViec WHERE maLSLV = ?";
     final String SELECT_ALL_SQL = "SELECT * FROM LichSuLamViec";
     final String SELECT_BY_ID_SQL = "SELECT *FROM LichSuLamViec WHERE maLSLV = ?";
+    final String SELECT_BY_maKH_SQL = "SELECT *FROM LichSuLamViec WHERE maKH = ?";
 
     @Override
     public void insert(LichSuLamViec entity) {
@@ -43,6 +43,13 @@ public class LichSuLamViecDAO extends QLBDSDAO<LichSuLamViec, String> {
             return null;
         }
         return list.get(0);
+    }
+     public List<LichSuLamViec> selectBymaKH(String id) {
+        List<LichSuLamViec> list = selectBySql(SELECT_BY_maKH_SQL, id);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list;
     }
 
     @Override

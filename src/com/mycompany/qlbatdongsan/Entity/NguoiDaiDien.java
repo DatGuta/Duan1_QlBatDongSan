@@ -4,7 +4,7 @@ package com.mycompany.qlbatdongsan.Entity;
 import java.util.Date;
 
 public class NguoiDaiDien {
-    private int maDD;
+    private String maDD;
     private String hoTen;
     private String sdtCoDinh;
     private String sdtDiDong;
@@ -15,11 +15,11 @@ public class NguoiDaiDien {
     private Date ngaySinh;
     private String maKH;
 
-    public int getMaDD() {
+    public String getMaDD() {
         return maDD;
     }
 
-    public void setMaDD(int maDD) {
+    public void setMaDD(String maDD) {
         this.maDD = maDD;
     }
 

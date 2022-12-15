@@ -2,7 +2,6 @@
 package com.mycompany.qlbatdongsan.DAO;
 
 
-import DAO.QLBDSDAO;
 import com.mycompany.qlbatdongsan.Entity.ChinhSachBanHang;
 import com.mycompany.qlbatdongsan.utils.JdbcHelper;
 import com.mycompany.qlbatdongsan.Entity.HopDong;

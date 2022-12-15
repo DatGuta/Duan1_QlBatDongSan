@@ -18,6 +18,15 @@ public class NhanVien {
     private String maQuanLy;
     private Boolean gioiTinh;
     private Boolean lockCheckBox;
+    private String Email;
+
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String Email) {
+        this.Email = Email;
+    }
      
     @Override
     public String toString() {

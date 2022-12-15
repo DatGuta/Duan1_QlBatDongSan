@@ -4,9 +4,11 @@
  */
 package com.mycompany.qlbatdongsan.ui;
 
+import com.mycompany.qlbatdongsan.DAO.KhachHangDAO;
 import com.mycompany.qlbatdongsan.Entity.KhachHang;
 import com.mycompany.qlbatdongsan.Entity.SanPhamDuAn;
 import static com.mycompany.qlbatdongsan.ui.ProjectFrame.fillTableDA;
+import java.util.List;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -17,6 +19,8 @@ import javax.swing.table.TableRowSorter;
  */
 public class ShowKhachHangFrame extends javax.swing.JFrame {
     KhachHang kh;
+    DefaultTableModel model;
+    KhachHangDAO dao = new KhachHangDAO();
     /**
      * Creates new form ShowKhachHangFrame
      */
@@ -24,7 +28,51 @@ public class ShowKhachHangFrame extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        initKhachHangCN();
+        fillToTableKhachHang();
     }
+    private void initKhachHangCN() {
+        model = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int i, int j) {
+                return false;
+            }
+        };
+        Object[] column = {"Mã khách hàng", "Xưng", "Họ và tên đệm", "Tên", "Ngày sinh", "Di động", "Số CCCD", "Địa chỉ liên lạc", "Địa chỉ thường trú", "Email", "Mã thuế TNCN", "Giới tính"};
+        model.setColumnIdentifiers(column);
+        model.setRowCount(0);
+        tblKhachHang.setModel(model);
+    }
+    public void fillToTableKhachHang() {
+        model = (DefaultTableModel) tblKhachHang.getModel();
+
+
+        model.setRowCount(0);
+        try {
+            List<KhachHang> list = dao.selectAll();
+            for (KhachHang kh : list) {
+                    Object[] row = {
+                        kh.getMaKH(),
+                        kh.getDanhXung(),
+                        kh.getHoTenDem(),
+                        kh.getTen(),
+                        kh.getNgaySinh(),
+                        kh.getSdt(),
+                        kh.getCCCD(),
+                        kh.getDiaChiLienLac(),
+                        kh.getDiaChiThuongTru(),
+                        kh.getEmail(),
+                        kh.getMaThue(),
+                        kh.getLoai(),
+                        kh.getGioiTinh() ? "Nữ" : "Nam"
+                    };
+                    model.addRow(row);
+                } 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
    public void Search(String str) {
         if (str.length() > 0) {
             if (tblKhachHang != null) {

@@ -1,7 +1,6 @@
 package com.mycompany.qlbatdongsan.DAO;
 
 
-import DAO.QLBDSDAO;
 import com.mycompany.qlbatdongsan.utils.JdbcHelper;
 import com.mycompany.qlbatdongsan.Entity.Phieu;
 import java.sql.ResultSet;

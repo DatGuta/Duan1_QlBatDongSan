@@ -1,6 +1,5 @@
 package com.mycompany.qlbatdongsan.DAO;
 
-import DAO.QLBDSDAO;
 import com.mycompany.qlbatdongsan.Entity.ChinhSachBanHang;
 import java.sql.ResultSet;
 import java.util.ArrayList;

@@ -8,7 +8,7 @@ import java.util.Date;
 public class LichSuGiaoDich {
     private String maLSGD;
     private Date ngayGD;
-    private int soGD;
+    private String soGD;
     private String loaiGD;
     private String maSPDA;
     private Float dienTich;
@@ -34,11 +34,11 @@ public class LichSuGiaoDich {
         this.ngayGD = ngayGD;
     }
 
-    public int getSoGD() {
+    public String getSoGD() {
         return soGD;
     }
 
-    public void setSoGD(int soGD) {
+    public void setSoGD(String soGD) {
         this.soGD = soGD;
     }
 

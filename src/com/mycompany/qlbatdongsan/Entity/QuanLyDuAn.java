@@ -8,12 +8,41 @@ public class QuanLyDuAn {
     private Date ngayDang;
     private String tenDA;
     private String diaChi;
-    private Float dienTich;
-    private int soGiayPhep;
-    private Date ngayCap;
-    private String noiCap;
-    private String loaiDA;
+    private double tongDienTich;
+    private double tongDienTichSan;
+    private double tongDienTichCanHo;
+    private double tongdienTichKhuThuongMai;
+    private double matDo;
+    private double tongVonDauTu;
+    private String phapLy;
+    private String tieuChuanBanGiao;
+    private String donViTuVanKT;
+    private String kienTrucThietKe;
+    private String quyMo;
+    private String khoiCong;
+    private String hoanThien;
+    private String banGiao;
     private String maNVPhuTrach;
+    private String chuDauTu;
+    private String loaiHinhSP;
+    private String soLuongSanPham;
+
+    public String getLoaiHinhSP() {
+        return loaiHinhSP;
+    }
+
+    public void setLoaiHinhSP(String loaiHinhSP) {
+        this.loaiHinhSP = loaiHinhSP;
+    }
+
+    public String getSoLuongSanPham() {
+        return soLuongSanPham;
+    }
+
+    public void setSoLuongSanPham(String soLuongSanPham) {
+        this.soLuongSanPham = soLuongSanPham;
+    }
+   
 
     public String getMaDA() {
         return maDA;
@@ -47,44 +76,116 @@ public class QuanLyDuAn {
         this.diaChi = diaChi;
     }
 
-    public Float getDienTich() {
-        return dienTich;
+    public double getTongDienTich() {
+        return tongDienTich;
     }
 
-    public void setDienTich(Float dienTich) {
-        this.dienTich = dienTich;
+    public void setTongDienTich(double tongDienTich) {
+        this.tongDienTich = tongDienTich;
     }
 
-    public int getSoGiayPhep() {
-        return soGiayPhep;
+    public double getTongDienTichSan() {
+        return tongDienTichSan;
     }
 
-    public void setSoGiayPhep(int soGiayPhep) {
-        this.soGiayPhep = soGiayPhep;
+    public void setTongDienTichSan(double tongDienTichSan) {
+        this.tongDienTichSan = tongDienTichSan;
     }
 
-    public Date getNgayCap() {
-        return ngayCap;
+    public double getTongDienTichCanHo() {
+        return tongDienTichCanHo;
     }
 
-    public void setNgayCap(Date ngayCap) {
-        this.ngayCap = ngayCap;
+    public void setTongDienTichCanHo(double tongDienTichCanHo) {
+        this.tongDienTichCanHo = tongDienTichCanHo;
     }
 
-    public String getNoiCap() {
-        return noiCap;
+    public double getTongdienTichKhuThuongMai() {
+        return tongdienTichKhuThuongMai;
     }
 
-    public void setNoiCap(String noiCap) {
-        this.noiCap = noiCap;
+    public void setTongdienTichKhuThuongMai(double tongdienTichKhuThuongMai) {
+        this.tongdienTichKhuThuongMai = tongdienTichKhuThuongMai;
     }
 
-    public String getLoaiDA() {
-        return loaiDA;
+    public double getMatDo() {
+        return matDo;
     }
 
-    public void setLoaiDA(String loaiDA) {
-        this.loaiDA = loaiDA;
+    public void setMatDo(double matDo) {
+        this.matDo = matDo;
+    }
+
+    public double getTongVonDauTu() {
+        return tongVonDauTu;
+    }
+
+    public void setTongVonDauTu(double tongVonDauTu) {
+        this.tongVonDauTu = tongVonDauTu;
+    }
+
+    public String getPhapLy() {
+        return phapLy;
+    }
+
+    public void setPhapLy(String phapLy) {
+        this.phapLy = phapLy;
+    }
+
+    public String getTieuChuanBanGia() {
+        return tieuChuanBanGiao;
+    }
+
+    public void setTieuChuanBanGiao(String tieuChuanBanGia) {
+        this.tieuChuanBanGiao = tieuChuanBanGia;
+    }
+
+    public String getDonViTuVanKT() {
+        return donViTuVanKT;
+    }
+
+    public void setDonViTuVanKT(String donViTuVanKT) {
+        this.donViTuVanKT = donViTuVanKT;
+    }
+
+    public String getKienTrucThietKe() {
+        return kienTrucThietKe;
+    }
+
+    public void setKienTrucThietKe(String kienTrucThietKe) {
+        this.kienTrucThietKe = kienTrucThietKe;
+    }
+
+    public String getQuyMo() {
+        return quyMo;
+    }
+
+    public void setQuyMo(String quyMo) {
+        this.quyMo = quyMo;
+    }
+
+    public String getKhoiCong() {
+        return khoiCong;
+    }
+
+    public void setKhoiCong(String khoiCong) {
+        this.khoiCong = khoiCong;
+    }
+
+    public String getHoanThien() {
+        return hoanThien;
+    }
+
+    public void setHoanThien(String hoanThien) {
+        this.hoanThien = hoanThien;
+    }
+
+    public String getBanGiao() {
+        return banGiao;
+    }
+
+    public void setBanGiao(String banGiao) {
+        this.banGiao = banGiao;
     }
 
     public String getMaNVPhuTrach() {
@@ -94,6 +195,15 @@ public class QuanLyDuAn {
     public void setMaNVPhuTrach(String maNVPhuTrach) {
         this.maNVPhuTrach = maNVPhuTrach;
     }
-    
+
+    public String getChuDauTu() {
+        return chuDauTu;
+    }
+
+    public void setChuDauTu(String chuDauTu) {
+        this.chuDauTu = chuDauTu;
+    }
+
+  
     
 }

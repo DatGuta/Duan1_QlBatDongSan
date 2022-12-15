@@ -1,7 +1,6 @@
 package com.mycompany.qlbatdongsan.DAO;
 
 
-import DAO.QLBDSDAO;
 import com.mycompany.qlbatdongsan.utils.JdbcHelper;
 import com.mycompany.qlbatdongsan.Entity.SanGiaoDich;
 import java.sql.ResultSet;
@@ -10,22 +9,20 @@ import java.util.List;
 
 public class SanGiaoDichDAO extends QLBDSDAO<SanGiaoDich, Integer> {
 
-    final String INSERT_SQL = "INSERT INTO SANGIAODICH (maSGD, sanGiaoDich, Sdt, diaChi, nguoiLienHe, chucVu, SdtNLH, nhanVienQuanLy, nhanVienTao, ngayTao) VALUES (?,?,?,?,?,?,?,?,?,?)";
-    final String UPDATE_SQL = "UPDATE SANGIAODICH SET sanGiaoDich = ?, Sdt = ?, diaChi = ?, nguoiLienHe = ?, chucVu = ?, SdtNLH = ?, nhanVienQuanLy = ?, nhanVienTao = ?, ngayTao = ? WHERE maSGD = ?";
+    final String INSERT_SQL = "INSERT INTO SANGIAODICH (maSGD, sanGiaoDich, Sdt, diaChi, nhanVienQuanLy, nhanVienTao, ngayTao) VALUES (?,?,?,?,?,?,?)";
+    final String UPDATE_SQL = "UPDATE SANGIAODICH SET sanGiaoDich = ?, Sdt = ?, diaChi = ?, nhanVienQuanLy = ?, nhanVienTao = ?, ngayTao = ? WHERE maSGD = ?";
     final String DELETE_SQL = "DELETE FROM SANGIAODICH WHERE maSGD = ?";
     final String SELECT_ALL_SQL = "SELECT * FROM SANGIAODICH";
     final String SELECT_BY_ID_SQL = "SELECT *FROM SANGIAODICH WHERE maSGD = ?";
 
     @Override
     public void insert(SanGiaoDich entity) {
-        JdbcHelper.update(INSERT_SQL, entity.getMaSGD(), entity.getSanGiaoDich(), entity.getSdt(), entity.getDiaChi(), entity.getNguoiLienHe(), entity.getChucVu(),
-                entity.getSdtNguoiLienHe(), entity.getNvQuanLy(), entity.getNvTao(), entity.getNgayTao());
+        JdbcHelper.update(INSERT_SQL, entity.getMaSGD(), entity.getSanGiaoDich(), entity.getSdt(), entity.getDiaChi(), entity.getNvQuanLy(), entity.getNvTao(), entity.getNgayTao());
     }
 
     @Override
     public void update(SanGiaoDich entity) {
-        JdbcHelper.update(UPDATE_SQL, entity.getSanGiaoDich(), entity.getSdt(), entity.getDiaChi(), entity.getNguoiLienHe(), entity.getChucVu(),
-                entity.getSdtNguoiLienHe(), entity.getNvQuanLy(), entity.getNvTao(), entity.getNgayTao(), entity.getMaSGD());
+        JdbcHelper.update(UPDATE_SQL, entity.getSanGiaoDich(), entity.getSdt(), entity.getDiaChi(), entity.getNvQuanLy(), entity.getNvTao(), entity.getNgayTao(), entity.getMaSGD());
     }
 
     @Override
@@ -58,9 +55,6 @@ public class SanGiaoDichDAO extends QLBDSDAO<SanGiaoDich, Integer> {
                 entity.setSanGiaoDich(rs.getString("sanGiaoDich"));
                 entity.setSdt(rs.getString("Sdt"));
                 entity.setDiaChi(rs.getString("diaChi"));
-                entity.setNguoiLienHe(rs.getString("nguoiLienHe"));
-                entity.setChucVu(rs.getString("chucVu"));
-                entity.setSdtNguoiLienHe(rs.getString("SdtNLH"));
                 entity.setNvQuanLy(rs.getString("nhanVienQuanLy"));
                 entity.setNvTao(rs.getString("nhanVienTao"));
                 entity.setNgayTao(rs.getDate("ngayTao"));
