@@ -5,9 +5,17 @@
 package com.mycompany.qlbatdongsan.ui;
 
 import com.mycompany.qlbatdongsan.DAO.KhachHangDAO;
-import com.mycompany.qlbatdongsan.Entity.NhanVien;
+import com.mycompany.qlbatdongsan.DAO.LichSuGiaoDichDAO;
+import com.mycompany.qlbatdongsan.DAO.LichSuLamViecDAO;
+import com.mycompany.qlbatdongsan.DAO.LichThanhToanDAO;
+import com.mycompany.qlbatdongsan.DAO.NguoiDaiDienDAO;
+import com.mycompany.qlbatdongsan.DAO.NguoiGioiThieuDAO;
 import com.mycompany.qlbatdongsan.Entity.KhachHang;
-import java.util.ArrayList;
+import com.mycompany.qlbatdongsan.Entity.LichSuGiaoDich;
+import com.mycompany.qlbatdongsan.Entity.LichSuLamViec;
+import com.mycompany.qlbatdongsan.Entity.NguoiDaiDien;
+import com.mycompany.qlbatdongsan.Entity.NguoiGioiThieu;
+import com.mycompany.qlbatdongsan.utils.MsgBox;
 import java.util.List;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
@@ -23,6 +31,11 @@ public class ClientsFrame extends javax.swing.JPanel {
     DefaultTableModel model;
     DefaultTableModel model1;
     KhachHangDAO daoKH = new KhachHangDAO();
+    LichSuGiaoDichDAO daoLSGD = new LichSuGiaoDichDAO();
+    LichSuLamViecDAO daoLSLV = new LichSuLamViecDAO();
+    LichThanhToanDAO daoLTT = new LichThanhToanDAO();
+    NguoiDaiDienDAO daoNDD = new NguoiDaiDienDAO();
+    NguoiGioiThieuDAO daoNGT = new NguoiGioiThieuDAO();
 
     /**
      * Creates new form ClientsFrame
@@ -33,7 +46,6 @@ public class ClientsFrame extends javax.swing.JPanel {
         initKhachHangDN();
         initLSGiaoDich();
         initLSLamViec();
-        initLSThucHien();
         initNguoiDaiDien();
         initNguoiGioiThieu();
         fillToTableKhachHang();
@@ -46,7 +58,7 @@ public class ClientsFrame extends javax.swing.JPanel {
                 return false;
             }
         };
-        Object[] column = {"STT", "Xưng", "Họ và tên đệm", "Tên", "Ngày sinh", "Di động", "Số CCCD", "Địa chỉ liên lạc", "Địa chỉ thường trú", "Email", "Mã thuế TNCN","Giới tính"};
+        Object[] column = {"Mã khách hàng", "Xưng", "Họ và tên đệm", "Tên", "Ngày sinh", "Di động", "Số CCCD", "Địa chỉ liên lạc", "Địa chỉ thường trú", "Email", "Mã thuế TNCN", "Giới tính"};
         model.setColumnIdentifiers(column);
         model.setRowCount(0);
         tblKhachHangCN.setModel(model);
@@ -59,23 +71,15 @@ public class ClientsFrame extends javax.swing.JPanel {
                 return false;
             }
         };
-        Object[] column = {"STT", "Xưng", "Họ và tên đệm", "Tên", "Ngày sinh", "Di động", "Số CCCD", "Địa chỉ liên lạc", "Địa chỉ thường trú", "Email", "Mã thuế TNCN", "Chức vụ","Giới tính"};
+        Object[] column = {"Mã khách hàng", "Xưng", "Họ và tên đệm", "Tên", "Ngày sinh", "Di động", "Số CCCD", "Địa chỉ liên lạc", "Địa chỉ thường trú", "Email", "Mã thuế TNCN", "Chức vụ", "Giới tính"};
         model.setColumnIdentifiers(column);
         model.setRowCount(0);
         tblKhachHangDN.setModel(model);
     }
 
-    private void initLSThucHien() {
-        model = new DefaultTableModel();
-        Object[] column = {"STT", "Ngày cập nhật", "Diễn giải", "Nhân viên Kiến Á", "Nhân viên Sàn", "Sàn giao dịch"};
-        model.setColumnIdentifiers(column);
-        model.setRowCount(0);
-        tblLSThucHien.setModel(model);
-    }
-
     private void initLSLamViec() {
         model = new DefaultTableModel();
-        Object[] column = {"STT", "Tiêu đề", "Người thực hiện", "Địa điểm", "Diễn giải", "Ngày bắt đầu", "Ngày kết thúc"};
+        Object[] column = {"STT", "Tiêu đề", "Người thực hiện", "Diễn giải", "Ngày bắt đầu", "Ngày kết thúc"};
         model.setColumnIdentifiers(column);
         model.setRowCount(0);
         tblLSLamViec.setModel(model);
@@ -115,7 +119,7 @@ public class ClientsFrame extends javax.swing.JPanel {
             for (KhachHang kh : list) {
                 if (kh.getLoai() != null) {
                     Object[] row = {
-                        kh.getSTT(),
+                        kh.getMaKH(),
                         kh.getDanhXung(),
                         kh.getHoTenDem(),
                         kh.getTen(),
@@ -127,12 +131,12 @@ public class ClientsFrame extends javax.swing.JPanel {
                         kh.getEmail(),
                         kh.getMaThue(),
                         kh.getLoai(),
-                        kh.getGioiTinh()?"Nữ":"Nam"
+                        kh.getGioiTinh() ? "Nữ" : "Nam"
                     };
                     model.addRow(row);
                 } else {
                     Object[] row = {
-                        kh.getSTT(),
+                        kh.getMaKH(),
                         kh.getDanhXung(),
                         kh.getHoTenDem(),
                         kh.getTen(),
@@ -144,8 +148,8 @@ public class ClientsFrame extends javax.swing.JPanel {
                         kh.getEmail(),
                         kh.getMaThue(),
                         kh.getLoai(),
-                        kh.getGioiTinh()?"Nữ":"Nam"
-                    
+                        kh.getGioiTinh() ? "Nữ" : "Nam"
+
                     };
                     model1.addRow(row);
                 }
@@ -153,6 +157,126 @@ public class ClientsFrame extends javax.swing.JPanel {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void fillToTableLichSuGiaoDich() {
+        model = (DefaultTableModel) tblLSGiaoDich.getModel();
+        model.setRowCount(0);
+        try {
+            List<LichSuGiaoDich> list1;
+            if (Tabs.getSelectedIndex() == 0) {
+                list1 = daoLSGD.selectBymaKH(String.valueOf(tblKhachHangCN.getValueAt(row, 0)));
+            } else {
+                list1 = daoLSGD.selectBymaKH(String.valueOf(tblKhachHangDN.getValueAt(row, 0)));
+            }
+            for (LichSuGiaoDich ls : list1) {
+                Object[] row = {
+                    ls.getNgayGD(),
+                    ls.getMaLSGD(),
+                    ls.getLoaiGD(),
+                    ls.getMaSPDA(),
+                    ls.getDienTich(),
+                    ls.getThanhTien(),
+                    ls.getDienGiai(),
+                    ls.getNhanVien(),
+                    ls.getSanGiaoDich()
+                };
+                model.addRow(row);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            MsgBox.alert(this, "Đã xảy ra lỗi khi truy vấn dữ liệu");
+        }
+    }
+
+    private void fillToTableLichSuLamViec() {
+        model = (DefaultTableModel) tblLSLamViec.getModel();
+        model.setRowCount(0);
+        try {
+             List<LichSuLamViec> listLSlv;
+        List<LichSuGiaoDich> list1;
+        if (Tabs.getSelectedIndex() == 0) {
+            list1 = daoLSGD.selectBymaKH(String.valueOf(tblKhachHangCN.getValueAt(row, 0)));
+        } else {
+            list1 = daoLSGD.selectBymaKH(String.valueOf(tblKhachHangDN.getValueAt(row, 0)));
+        }
+
+        if (Tabs.getSelectedIndex() == 0) {
+            listLSlv = daoLSLV.selectBymaKH(String.valueOf(tblKhachHangCN.getValueAt(row, 0)));
+        } else {
+            listLSlv = daoLSLV.selectBymaKH(String.valueOf(tblKhachHangDN.getValueAt(row, 0)));
+        }
+        for (LichSuLamViec ls : listLSlv) {
+            for (LichSuGiaoDich ls1 : list1) {
+                Object[] row = {
+                    ls.getSTT(),
+                    ls.getTieuDe(),
+                    ls.getMaNV(),
+                    ls1.getDienGiai(),
+                    ls.getNgayBatDau(),
+                    ls.getNgayKetThuc()
+                };
+                model.addRow(row);
+            }
+        }
+        } catch (Exception e) {
+            MsgBox.alert(this, "Đã xảy ra lỗi khi truy vấn dữ liệu!");
+            e.printStackTrace();
+        }
+    }
+
+    private void fillToTableNguoiDaiDien() {
+        model = (DefaultTableModel) tblNguoiDaiDien.getModel();
+        model.setRowCount(0);
+        try {
+            List<NguoiDaiDien> listNDD;
+        if (Tabs.getSelectedIndex() == 0) {
+            listNDD = daoNDD.selectBymaKH(String.valueOf(tblKhachHangCN.getValueAt(row, 0)));
+        } else {
+            listNDD = daoNDD.selectBymaKH(String.valueOf(tblKhachHangDN.getValueAt(row, 0)));
+        }
+        for (NguoiDaiDien ls : listNDD) {
+            Object[] row = {
+                ls.getHoTen(),
+                ls.getSdtCoDinh(),
+                ls.getSdtDiDong(),
+                ls.getEmail(),
+                ls.getDiaChiLienLac(),
+                ls.getDiaChiThuongTru(),};
+            model.addRow(row);
+        }
+        } catch (Exception e) {
+            MsgBox.alert(this, "Đã xảy ra lỗi khi truy vấn  dữ liệu!");
+            e.printStackTrace();
+        }
+    }
+
+    private void fillToTableNguoiGioiThieu() {
+        model = (DefaultTableModel) tblNguoiGioiThieu.getModel();
+        model.setRowCount(0);
+        try {
+            List<NguoiGioiThieu> listNGT;
+        if (Tabs.getSelectedIndex() == 0) {
+            listNGT = daoNGT.selectBymaKH(String.valueOf(tblKhachHangCN.getValueAt(row, 0)));
+        } else {
+            listNGT = daoNGT.selectBymaKH(String.valueOf(tblKhachHangDN.getValueAt(row, 0)));
+        }
+        for (NguoiGioiThieu ls : listNGT) {
+            Object[] row = {
+                ls.getHoTen(),
+                ls.getSdtCoDinh(),
+                ls.getSdtDiDong(),
+                ls.getEmail(),
+                ls.getDiaChiLienLac(),
+                ls.getDiaChiThuongTru(),
+                ls.getHoaHong()
+            };
+            model.addRow(row);
+        }
+        } catch (Exception e) {
+            e.printStackTrace();
+            MsgBox.alert(this, "Đã xảy ra lỗi khi truy vấn dữ liệu!");
         }
     }
 
@@ -195,9 +319,6 @@ public class ClientsFrame extends javax.swing.JPanel {
     private void initComponents() {
 
         tabs = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tblLSThucHien = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblLSLamViec = new javax.swing.JTable();
@@ -210,10 +331,7 @@ public class ClientsFrame extends javax.swing.JPanel {
         jPanel5 = new javax.swing.JPanel();
         jScrollPane8 = new javax.swing.JScrollPane();
         tblNguoiGioiThieu = new javax.swing.JTable();
-        jPanel6 = new javax.swing.JPanel();
-        jScrollPane9 = new javax.swing.JScrollPane();
-        jTable7 = new javax.swing.JTable();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        Tabs = new javax.swing.JTabbedPane();
         jPanel7 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         tblKhachHangCN = new javax.swing.JTable();
@@ -225,37 +343,6 @@ public class ClientsFrame extends javax.swing.JPanel {
         lblAddClient = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
-
-        tblLSThucHien.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane2.setViewportView(tblLSThucHien);
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1327, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        tabs.addTab("LS thực hiện", jPanel1);
 
         tblLSLamViec.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -385,38 +472,6 @@ public class ClientsFrame extends javax.swing.JPanel {
 
         tabs.addTab("Người giới thiệu", jPanel5);
 
-        jTable7.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane9.setViewportView(jTable7);
-
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 1321, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        tabs.addTab("Nhân viên quản lý", jPanel6);
-
         tblKhachHangCN.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -454,7 +509,7 @@ public class ClientsFrame extends javax.swing.JPanel {
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Cá nhân ", jPanel7);
+        Tabs.addTab("Cá nhân ", jPanel7);
 
         tblKhachHangDN.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -494,7 +549,7 @@ public class ClientsFrame extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Doanh nghiệp", jPanel8);
+        Tabs.addTab("Doanh nghiệp", jPanel8);
 
         jLabel1.setFont(new java.awt.Font("Serif", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(102, 102, 102));
@@ -541,7 +596,7 @@ public class ClientsFrame extends javax.swing.JPanel {
                         .addComponent(tabs)
                         .addGap(5, 5, 5))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(Tabs, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addContainerGap())))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -559,7 +614,7 @@ public class ClientsFrame extends javax.swing.JPanel {
                 .addGap(16, 16, 16)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addComponent(jTabbedPane1)
+                .addComponent(Tabs)
                 .addGap(29, 29, 29)
                 .addComponent(btnAddClient, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36)
@@ -590,17 +645,17 @@ public class ClientsFrame extends javax.swing.JPanel {
 
     private void btnAddClientsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddProjectMouseEntered
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_btnAddProjectMouseEntered
 
     private void btnAddClientsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddProjectMouseExited
         // TODO add your handling code here:
-       
+
     }//GEN-LAST:event_btnAddProjectMouseExited
 
     private void lblAddClientMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddClientMouseClicked
         // TODO add your handling code here:
-        AddClientFrame addClientFrame =  new AddClientFrame();
+        AddClientFrame addClientFrame = new AddClientFrame();
         addClientFrame.setVisible(true);
     }//GEN-LAST:event_lblAddClientMouseClicked
 
@@ -622,37 +677,37 @@ public class ClientsFrame extends javax.swing.JPanel {
 
     private void tblKhachHangDNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblKhachHangDNMouseClicked
         // TODO add your handling code here:
+        this.row = tblKhachHangCN.rowAtPoint(evt.getPoint());
+        this.row = tblKhachHangDN.rowAtPoint(evt.getPoint());
+        fillToTableLichSuGiaoDich();
+        fillToTableLichSuLamViec();
+        fillToTableNguoiDaiDien();
+        fillToTableNguoiGioiThieu();
     }//GEN-LAST:event_tblKhachHangDNMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTabbedPane Tabs;
     private com.mycompany.qlbatdongsan.utils.PanelRound btnAddClient;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
-    private javax.swing.JScrollPane jScrollPane9;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable7;
     private javax.swing.JLabel lblAddClient;
     private javax.swing.JTabbedPane tabs;
     private static javax.swing.JTable tblKhachHangCN;
     private static javax.swing.JTable tblKhachHangDN;
     private javax.swing.JTable tblLSGiaoDich;
     private javax.swing.JTable tblLSLamViec;
-    private javax.swing.JTable tblLSThucHien;
     private javax.swing.JTable tblNguoiDaiDien;
     private javax.swing.JTable tblNguoiGioiThieu;
     // End of variables declaration//GEN-END:variables

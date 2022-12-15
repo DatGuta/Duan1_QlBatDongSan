@@ -4,20 +4,16 @@
  */
 package com.mycompany.qlbatdongsan.ui;
 
-import com.mycompany.qlbatdongsan.DAO.LichThanhToanDAO;
 import com.mycompany.qlbatdongsan.DAO.QuanLyDuAnDAO;
-import com.mycompany.qlbatdongsan.utils.MsgBox;
-import com.mycompany.qlbatdongsan.Entity.LichSuThanhToan;
+import com.mycompany.qlbatdongsan.DAO.TaiLieuDuAnDAO;
 import com.mycompany.qlbatdongsan.Entity.QuanLyDuAn;
-import java.awt.Event;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import com.mycompany.qlbatdongsan.Entity.TaiLieuDuAN;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Image;
 import java.util.List;
-import javax.swing.JOptionPane;
+import javax.swing.ImageIcon;
 import javax.swing.RowFilter;
-import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -29,13 +25,19 @@ public class ProjectFrame extends javax.swing.JPanel {
 
     DefaultTableModel model;
     static QuanLyDuAnDAO daoDA = new QuanLyDuAnDAO();
-    int row = -1;
-    static String SearchText = "";
+    TaiLieuDuAnDAO daoImage = new TaiLieuDuAnDAO();
+    int row = 0;
+    static List<QuanLyDuAn> list = daoDA.selectAll();
 
     public ProjectFrame() {
         initComponents();
         initTableProject();
         fillTableDA();
+        if (!list.isEmpty()) {
+            tblProject.setRowSelectionInterval(0, 0);
+            lblTieuDeImage.setText("DỰ ÁN " + list.get(row).getTenDA().toUpperCase());
+            SeeImageProject(list.get(row).getMaDA());
+        }
     }
 
     public void initTableProject() {
@@ -45,10 +47,9 @@ public class ProjectFrame extends javax.swing.JPanel {
                 return false;
             }
         };
-        Object[] column = {"Mã dự án", "Tên dự án", "Địa chỉ", "Diện tích", "Số giấy phép", "Ngày cấp", "Nơi cấp", "Loaị DA", "Ngày đăng"};
+        Object[] column = {"Mã dự án", "Tên dự án", "Vị trí", "Tổng diện tích", "Tổng DT sàn", "Tổng DT căn hộ", "Tổng DT khu thương mại", "Mật độ", "Tổng vốn DT", "Chủ đầu tư"};
         model.setColumnIdentifiers(column);
         model.setRowCount(0);
-
         tblProject.setModel(model);
     }
 
@@ -56,18 +57,18 @@ public class ProjectFrame extends javax.swing.JPanel {
         DefaultTableModel model = (DefaultTableModel) tblProject.getModel();
         model.setRowCount(0);
         try {
-            List<QuanLyDuAn> list = daoDA.selectAll();
             for (QuanLyDuAn da : list) {
                 Object[] row = {
                     da.getMaDA(),
                     da.getTenDA(),
                     da.getDiaChi(),
-                    da.getDienTich(),
-                    da.getSoGiayPhep(),
-                    da.getNgayCap(),
-                    da.getNoiCap(),
-                    da.getLoaiDA(),
-                    da.getNgayDang()
+                    da.getTongDienTich(),
+                    da.getTongDienTichSan(),
+                    da.getTongDienTichCanHo(),
+                    da.getTongdienTichKhuThuongMai(),
+                    da.getMatDo(),
+                    da.getTongVonDauTu(),
+                    da.getChuDauTu()
                 };
                 model.addRow(row);
             }
@@ -76,10 +77,20 @@ public class ProjectFrame extends javax.swing.JPanel {
         }
     }
 
+    void SeeImageProject(String maDA) {
+        List<TaiLieuDuAN> image = daoImage.selectByIdmaDA(maDA);
+        if (image != null) {
+            lblImageProject.setIcon(new ImageIcon(new ImageIcon("D:\\DuAn_1\\Duan1_QlBatDongSan\\src\\com\\mycompany\\qlbatdongsan\\images\\imgAvartar\\" + image.get(row).getHinh()).getImage().getScaledInstance(471, 579, Image.SCALE_DEFAULT)));
+        } else {
+            lblImageProject.setText("Chưa có hình ảnh!");
+            lblImageProject.setIcon(null);
+        }
+    }
+
     void edit() {
         QuanLyDuAn da = daoDA.selectById(tblProject.getValueAt(row, 0).toString());
-        SeeProjectFrame manengerProjectFrame = new SeeProjectFrame(da);
-        manengerProjectFrame.setVisible(true);
+        NotesFrame.palAllMain.display(new SeeProjectPanel(da));
+
     }
 
     public static void Search(String str) {
@@ -93,7 +104,7 @@ public class ProjectFrame extends javax.swing.JPanel {
                 return;
             }
         }
-        if (str.length()==0) {
+        if (str.length() == 0) {
             fillTableDA();
         }
     }
@@ -112,10 +123,12 @@ public class ProjectFrame extends javax.swing.JPanel {
         tblProject = new javax.swing.JTable();
         btnAddProject = new com.mycompany.qlbatdongsan.utils.PanelRound();
         lblAddProject = new javax.swing.JLabel();
+        lblImageProject = new javax.swing.JLabel();
+        lblTieuDeImage = new javax.swing.JLabel();
 
-        setBackground(new java.awt.Color(255, 255, 255));
+        setBackground(new java.awt.Color(153, 153, 153));
 
-        jLabel1.setFont(new java.awt.Font("Serif", 1, 24)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI Black", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(102, 102, 102));
         jLabel1.setText("DỰ ÁN");
 
@@ -130,6 +143,7 @@ public class ProjectFrame extends javax.swing.JPanel {
         });
         jScrollPane2.setViewportView(tblProject);
 
+        btnAddProject.setBackground(new java.awt.Color(204, 204, 204));
         btnAddProject.setRoundBottonLeft(30);
         btnAddProject.setRoundBottonRight(30);
         btnAddProject.setRoundTopLeft(30);
@@ -153,39 +167,62 @@ public class ProjectFrame extends javax.swing.JPanel {
         btnAddProject.setLayout(btnAddProjectLayout);
         btnAddProjectLayout.setHorizontalGroup(
             btnAddProjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblAddProject, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
+            .addGroup(btnAddProjectLayout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addComponent(lblAddProject)
+                .addContainerGap(34, Short.MAX_VALUE))
         );
         btnAddProjectLayout.setVerticalGroup(
             btnAddProjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblAddProject, javax.swing.GroupLayout.PREFERRED_SIZE, 58, Short.MAX_VALUE)
+            .addComponent(lblAddProject, javax.swing.GroupLayout.PREFERRED_SIZE, 52, Short.MAX_VALUE)
         );
+
+        lblImageProject.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblImageProject.setText("Chọn dự án để xem hình ảnh");
+        lblImageProject.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        lblTieuDeImage.setFont(new java.awt.Font("Segoe UI Black", 1, 12)); // NOI18N
+        lblTieuDeImage.setForeground(new java.awt.Color(51, 51, 51));
+        lblTieuDeImage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTieuDeImage.setText("DỰ ÁN");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(51, 51, 51)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(35, 35, 35)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1244, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(582, 582, 582)
-                        .addComponent(btnAddProject, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(35, 35, 35))
+                            .addComponent(lblImageProject, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(57, 57, 57)
+                                .addComponent(lblTieuDeImage, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(57, 57, 57)
+                                .addComponent(btnAddProject, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 829, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 569, Short.MAX_VALUE)
-                .addGap(38, 38, 38)
-                .addComponent(btnAddProject, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 579, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblImageProject, javax.swing.GroupLayout.PREFERRED_SIZE, 573, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnAddProject, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblTieuDeImage, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -200,21 +237,28 @@ public class ProjectFrame extends javax.swing.JPanel {
             this.row = tblProject.rowAtPoint(evt.getPoint());
             edit();
         }
+        if (evt.getClickCount() == 1) {
+            this.row = tblProject.rowAtPoint(evt.getPoint());
+            lblTieuDeImage.setText("DỰ ÁN " + list.get(row).getTenDA().toUpperCase());
+            SeeImageProject(list.get(row).getMaDA());
+
+        }
+
     }//GEN-LAST:event_tblProjectMouseClicked
 
     private void btnAddProjectMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddProjectMouseEntered
         // TODO add your handling code here:
-       
+
     }//GEN-LAST:event_btnAddProjectMouseEntered
 
     private void btnAddProjectMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddProjectMouseExited
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_btnAddProjectMouseExited
 
     private void btnAddProjectMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddProjectMouseClicked
         // TODO add your handling code here:
-       
+
     }//GEN-LAST:event_btnAddProjectMouseClicked
 
     private void lblAddProjectMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddProjectMouseClicked
@@ -225,12 +269,15 @@ public class ProjectFrame extends javax.swing.JPanel {
 
     private void lblAddProjectMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddProjectMouseEntered
         // TODO add your handling code here:
-         btnAddProject.setBounds(btnAddProject.getX() - 5, btnAddProject.getY() - 5, btnAddProject.getWidth() + 10, btnAddProject.getHeight() + 10);
+        btnAddProject.setBackground(new Color(255, 255, 255));
+        btnAddProject.setBounds(btnAddProject.getX() - 5, btnAddProject.getY() - 5, btnAddProject.getWidth() + 10, btnAddProject.getHeight() + 10);
         lblAddProject.setBounds(lblAddProject.getX(), lblAddProject.getY(), lblAddProject.getWidth() + 10, lblAddProject.getHeight() + 10);
     }//GEN-LAST:event_lblAddProjectMouseEntered
 
     private void lblAddProjectMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddProjectMouseExited
         // TODO add your handling code here:
+
+        btnAddProject.setBackground(new Color(204, 204, 204));
         btnAddProject.setBounds(btnAddProject.getX() + 5, btnAddProject.getY() + 5, btnAddProject.getWidth() - 10, btnAddProject.getHeight() - 10);
         lblAddProject.setBounds(lblAddProject.getX(), lblAddProject.getY(), lblAddProject.getWidth() - 10, lblAddProject.getHeight() - 10);
     }//GEN-LAST:event_lblAddProjectMouseExited
@@ -241,6 +288,8 @@ public class ProjectFrame extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblAddProject;
+    private javax.swing.JLabel lblImageProject;
+    private javax.swing.JLabel lblTieuDeImage;
     private static javax.swing.JTable tblProject;
     // End of variables declaration//GEN-END:variables
 }

@@ -18,13 +18,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import org.apache.commons.compress.harmony.unpack200.bytecode.forms.ThisFieldRefForm;
 
 /**
  *
  * @author HO VAN DAT
  */
 public class Main extends javax.swing.JFrame {
-
     private int[] status = {0, 1, 0, 0, 0, 0};
     private int indexForMenuMain = 1;
 
@@ -694,10 +694,6 @@ public class Main extends javax.swing.JFrame {
         lblEmailUser.setText("thanhvy2411@gmail.com");
 
         panelRound3.setBackground(new java.awt.Color(255, 255, 255));
-        panelRound3.setRoundBottonLeft(30);
-        panelRound3.setRoundBottonRight(30);
-        panelRound3.setRoundTopLeft(30);
-        panelRound3.setRoundTopRight(30);
 
         javax.swing.GroupLayout panelRound3Layout = new javax.swing.GroupLayout(panelRound3);
         panelRound3.setLayout(panelRound3Layout);
@@ -1145,7 +1141,8 @@ public class Main extends javax.swing.JFrame {
 
     private void lblNontificationMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblNontificationMouseClicked
         // TODO add your handling code here:
-  
+        SeeKhachHangAndNhanVien seeKhachHangAndNhanVien = new  SeeKhachHangAndNhanVien();
+        seeKhachHangAndNhanVien.setVisible(true);
 
     }//GEN-LAST:event_lblNontificationMouseClicked
 
@@ -1534,7 +1531,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel pal_AllMain;
     private javax.swing.JPanel pal_Head;
     private com.mycompany.qlbatdongsan.utils.PanelRound panelRound1;
-    private com.mycompany.qlbatdongsan.utils.PanelRound panelRound12;
     private com.mycompany.qlbatdongsan.utils.PanelRound panelRound3;
     private com.mycompany.qlbatdongsan.utils.PanelRound panelRound4;
     private com.mycompany.qlbatdongsan.utils.PanelRound panelRound9;

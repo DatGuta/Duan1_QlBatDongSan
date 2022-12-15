@@ -4,14 +4,45 @@
  */
 package com.mycompany.qlbatdongsan.ui;
 
+import com.mycompany.qlbatdongsan.DAO.CongNoDAO;
+import com.mycompany.qlbatdongsan.Entity.CongNo;
+import com.mycompany.qlbatdongsan.utils.MsgBox;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+
 
 /**
  *
  * @author HO VAN DAT
  */
 public class DebtFrame extends javax.swing.JPanel {
+
     DefaultTableModel model;
+    ArrayList<CongNo> arr = new ArrayList<CongNo>();
+    CongNoDAO dao = new CongNoDAO();
+
     /**
      * Creates new form DebtFrame
      */
@@ -19,21 +50,61 @@ public class DebtFrame extends javax.swing.JPanel {
         initComponents();
         initTableCongNo();
         initTablePhieuThu();
+        fillToTableCongNo();
     }
-     private void initTableCongNo() {
+//     private void initTableCongNo() {
+//        model = new DefaultTableModel();
+//        Object[] column = {"Khách hàng","Mã giao dịch","Căn hộ","Tương ứng","Thuế VAT","Phải thu","Đã thu","Còn lại","Lãi nộp chậm","Chiết khấu","Cộng"};
+//        model.setColumnIdentifiers(column);
+//        model.setRowCount(0);
+//        tblCongNo.setModel(model);
+//    }
+
+    private void initTableCongNo() {
         model = new DefaultTableModel();
-        Object[] column = {"Khách hàng","Mã giao dịch","Căn hộ","Tương ứng","Thuế VAT","Phải thu","Đã thu","Còn lại","Lãi nộp chậm","Chiết khấu","Cộng"};
+        Object[] column = {"Số công nợ", "Mã khách hàng", "Họ tên", "Mã giao dịch", "Căn hộ", "Tương ứng", "Thuế VAT", "Phải thu", "Đã thu", "Còn lại", "Lãi nộp chậm", "Chiết khấu", "Cộng"};
         model.setColumnIdentifiers(column);
         model.setRowCount(0);
         tblCongNo.setModel(model);
     }
-      private void initTablePhieuThu() {
+
+    private void initTablePhieuThu() {
         model = new DefaultTableModel();
-        Object[] column = {"Số phiếu","Ngày thu","TK nợ","TK có","Số tiền(VNĐ)","Người nộp","Địa chỉ","Diễn giải","Nhân viên"};
+        Object[] column = {"Số phiếu", "Ngày thu", "TK nợ", "TK có", "Số tiền(VNĐ)", "Người nộp", "Địa chỉ", "Diễn giải", "Nhân viên"};
         model.setColumnIdentifiers(column);
         model.setRowCount(0);
-        tblCongNo.setModel(model);
+        tblPhieuThu.setModel(model);
     }
+
+    public void fillToTableCongNo() {
+        DefaultTableModel model = (DefaultTableModel) tblCongNo.getModel();
+        model.setRowCount(0);
+        try {
+            List<CongNo> list = dao.selectAll();
+            for (CongNo nh : list) {
+                Object[] row = {
+                    nh.getSoCongNo(),
+                    nh.getMaKH(),
+                    nh.getHoTen(),
+                    nh.getMaGD(),
+                    nh.getTenDA(),
+                    nh.getTamUng(),
+                    nh.getThueVat(),
+                    nh.getPhaiThu(),
+                    nh.getDaThu(),
+                    nh.getConLai(),
+                    nh.getLaiNopCham(),
+                    nh.getChietKhau(),
+                    nh.getCong()
+                };
+                arr.add(nh);
+                model.addRow(row);
+            }
+        } catch (Exception e) {
+            MsgBox.alert(this, "Lỗi truy vấn dữ liệu!");
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -62,8 +133,18 @@ public class DebtFrame extends javax.swing.JPanel {
         cboTGKetThuc.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         btnNhacNo.setText("Nhắc nợ");
+        btnNhacNo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNhacNoActionPerformed(evt);
+            }
+        });
 
         btnExport.setText("Export");
+        btnExport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportActionPerformed(evt);
+            }
+        });
 
         tblCongNo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -161,6 +242,146 @@ public class DebtFrame extends javax.swing.JPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnNhacNoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNhacNoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnNhacNoActionPerformed
+
+    private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
+        // TODO add your handling code here:
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM");
+        LocalDateTime now = LocalDateTime.now();
+        try {
+              XSSFWorkbook wordkbook = new XSSFWorkbook();
+            XSSFSheet sheet = wordkbook.createSheet("danhsach");
+            //
+            XSSFFont font = sheet.getWorkbook().createFont();
+            font.setFontName("Times New Roman");
+            font.setBold(true);
+            font.setFontHeightInPoints((short) 14); // font size
+            font.setColor(IndexedColors.WHITE.getIndex()); // text color
+            //
+            CellStyle cellStyle = sheet.getWorkbook().createCellStyle();
+            cellStyle.setFont(font);
+            cellStyle.setFillForegroundColor(IndexedColors.BLUE.getIndex());
+            cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            cellStyle.setAlignment(HorizontalAlignment.CENTER);
+            cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+            cellStyle.setBorderBottom(BorderStyle.THIN);
+            // // căn chỉnh ngang dọc
+
+            XSSFCellStyle centerStyle = wordkbook.createCellStyle();
+            centerStyle.setAlignment(HorizontalAlignment.CENTER);
+            centerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+
+            
+            /// gộp
+            Row row = sheet.createRow(2);
+            Cell cell = row.createCell(0);
+            cell.setCellValue("DANH SÁCH CÔNG NỢ    " + dtf.format(now));
+            cell.setCellStyle(cellStyle);
+            sheet.addMergedRegion(new CellRangeAddress(2, 2, 0, 12));
+
+            row = sheet.createRow(3); // từ dòng 3
+            cell = row.createCell(0, CellType.STRING);
+            cell.setCellValue("Số công nợ");
+
+            cell = row.createCell(1, CellType.STRING);
+            cell.setCellValue("MÃ KH");
+
+            cell = row.createCell(2, CellType.STRING);
+            cell.setCellValue("Họ tên");
+
+            cell = row.createCell(3, CellType.STRING);
+            cell.setCellValue("Mã giao dịch");
+
+            cell = row.createCell(4, CellType.STRING);
+            cell.setCellValue("Căn hộ");
+
+            cell = row.createCell(5, CellType.STRING);
+            cell.setCellValue("Tương ứng");
+
+            cell = row.createCell(6, CellType.STRING);
+            cell.setCellValue("Thuế VAT");
+
+            cell = row.createCell(7, CellType.STRING);
+            cell.setCellValue("Phải thu");
+
+            cell = row.createCell(8, CellType.STRING);
+            cell.setCellValue("Đã thu");
+
+            cell = row.createCell(9, CellType.STRING);
+            cell.setCellValue("Còn lại");
+
+            cell = row.createCell(10, CellType.STRING);
+            cell.setCellValue("lãi nộp chậm");
+
+            cell = row.createCell(11, CellType.STRING);
+            cell.setCellValue("Chiết khấu");
+
+            cell = row.createCell(12, CellType.STRING);
+            cell.setCellValue("Công");
+
+            for (int i = 0; i < arr.size(); i++) {
+                row = sheet.createRow(4 + i); // từ dòng 5
+
+                cell = row.createCell(0, CellType.STRING); // cột 0
+                cell.setCellValue(arr.get(i).getSoCongNo());
+
+                cell = row.createCell(1, CellType.STRING);
+                cell.setCellValue(arr.get(i).getMaKH());
+
+                cell = row.createCell(2, CellType.STRING);
+                cell.setCellValue(arr.get(i).getHoTen());
+
+                cell = row.createCell(3, CellType.STRING);
+                cell.setCellValue(arr.get(i).getMaGD());
+
+                cell = row.createCell(4, CellType.STRING);
+                cell.setCellValue(arr.get(i).getTenDA());
+
+                cell = row.createCell(5, CellType.STRING);
+                cell.setCellValue(arr.get(i).getTamUng());
+
+                cell = row.createCell(6, CellType.STRING);
+                cell.setCellValue(arr.get(i).getThueVat());
+
+                cell = row.createCell(7, CellType.STRING);
+                cell.setCellValue(arr.get(i).getPhaiThu());
+
+                cell = row.createCell(8, CellType.STRING);
+                cell.setCellValue(arr.get(i).getDaThu());
+
+                cell = row.createCell(9, CellType.STRING);
+                cell.setCellValue(arr.get(i).getConLai());
+
+                cell = row.createCell(10, CellType.STRING);
+                cell.setCellValue(arr.get(i).getLaiNopCham());
+
+                cell = row.createCell(11, CellType.STRING);
+                cell.setCellValue(arr.get(i).getChietKhau());
+
+                cell = row.createCell(12, CellType.STRING);
+                cell.setCellValue(arr.get(i).getCong());
+
+            }
+
+            File f = new File("D:\\DuAn_1\\Duan1_QlBatDongSan\\src\\com\\mycompany\\qlbatdongsan\\files\\CongNo" + dtf.format(now) + ".xlsx");
+            try {
+                FileOutputStream fis = new FileOutputStream(f);
+                wordkbook.write(fis);
+                fis.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            MsgBox.alert(this, "Đã xuất file thành công!");
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            MsgBox.alert(this, "Đã xảy ra lỗi khi xuất file!");
+        }
+    }//GEN-LAST:event_btnExportActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

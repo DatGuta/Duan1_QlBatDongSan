@@ -336,7 +336,7 @@ public class NotesFrame extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JSeparator jSeparator1;
     private com.mycompany.qlbatdongsan.utils.NavigationBar navigationBar1;
-    private com.mycompany.qlbatdongsan.utils.PanelTransaction palAllMain;
+    public static com.mycompany.qlbatdongsan.utils.PanelTransaction palAllMain;
     private com.mycompany.qlbatdongsan.utils.PanelRound panelRound1;
     private com.mycompany.qlbatdongsan.utils.PanelRound panelRound2;
     private com.mycompany.qlbatdongsan.utils.PanelRound panelRound3;

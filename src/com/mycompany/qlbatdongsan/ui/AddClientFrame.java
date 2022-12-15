@@ -105,7 +105,8 @@ public class AddClientFrame extends javax.swing.JFrame {
         }
         return null;
     }
-    public KhachHang getForm(){
+
+    public KhachHang getForm() {
         KhachHang kh = new KhachHang();
         kh.setMaKH(maKH);
         kh.setCCCD(txtSoCCCD.getText());
@@ -115,9 +116,10 @@ public class AddClientFrame extends javax.swing.JFrame {
         kh.setDiaChiLienLac(txtDiaChiLienLac.getText());
         kh.setDiaChiThuongTru(txtDiaChiThuongTru.getText());
         kh.setEmail(txtEmail.getText());
-        kh.setGioiTinh(Boolean.getBoolean(txtGioiTinh.getText().equals("Nữ")?"true":"false"));
+        kh.setGioiTinh(Boolean.getBoolean(txtGioiTinh.getText().equals("Nữ") ? "true" : "false"));
         return kh;
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -156,6 +158,7 @@ public class AddClientFrame extends javax.swing.JFrame {
         txtChucVu = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(102, 102, 255));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI Black", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(102, 102, 102));
@@ -327,14 +330,20 @@ public class AddClientFrame extends javax.swing.JFrame {
 
     private void btnHoanTat1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHoanTat1ActionPerformed
         // TODO add your handling code here:
-        
-        
-        if (file == null) {
-            MsgBox.alert(this, "Bạn chưa chọn ảnh!");
-        } else {
-            addImage(file);
+
+        try {
+            if (file == null) {
+                MsgBox.alert(this, "Bạn chưa chọn ảnh!");
+            } else {
+                addImage(file);
+                daoKH.insert(getForm());
+                MsgBox.alert(this, "Thêm thành công");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            MsgBox.alert(this, "Thêm thất bại!");
         }
-        
+
     }//GEN-LAST:event_btnHoanTat1ActionPerformed
 
     /**

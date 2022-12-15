@@ -6,6 +6,9 @@ package com.mycompany.qlbatdongsan.ui;
 
 import com.mycompany.qlbatdongsan.utils.MsgBox;
 import com.mycompany.qlbatdongsan.Entity.SanGiaoDich;
+import com.mycompany.qlbatdongsan.utils.XDate;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -18,7 +21,20 @@ public class SeeDealerBlockFrame extends javax.swing.JFrame {
      */
     public SeeDealerBlockFrame(SanGiaoDich entity) {
         initComponents();
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.sgd = entity;
+        lblImage.setIcon(new ImageIcon(new ImageIcon("D:\\DuAn_1\\Duan1_QlBatDongSan\\src\\com\\mycompany\\qlbatdongsan\\images\\imgAvartar\\toanha1-16010632.png").getImage().getScaledInstance(lblImage.getWidth(), lblImage.getHeight(), Image.SCALE_DEFAULT)));
+        setForm();
+    }
+    
+    public void setForm(){
+        lblTenSanGiaoDich.setText("  "+sgd.getSanGiaoDich());
+        lblDiaChi.setText("  Địa chỉ: "+sgd.getDiaChi());
+        lblNVQuanLy.setText("  Quản lý: "+sgd.getNvQuanLy());
+        lblSDT.setText("  Số điện thoại: "+sgd.getSdt());
+        lblNVTao.setText("  Người tạo: "+sgd.getNvTao());
+        lblNgayTao.setText("  Ngày tạo: "+XDate.toString(sgd.getNgayTao(), "yyyy-MM-dd"));
     }
 
     /**
@@ -33,8 +49,17 @@ public class SeeDealerBlockFrame extends javax.swing.JFrame {
         btnEditDealerBlock = new javax.swing.JButton();
         btnExitProject = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        lblTenSanGiaoDich = new javax.swing.JLabel();
+        lblDiaChi = new javax.swing.JLabel();
+        lblNVTao = new javax.swing.JLabel();
+        lblNgayTao = new javax.swing.JLabel();
+        lblNVQuanLy = new javax.swing.JLabel();
+        lblSDT = new javax.swing.JLabel();
+        lblLogo = new javax.swing.JLabel();
+        lblImage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         btnEditDealerBlock.setText("Chỉnh sửa");
         btnEditDealerBlock.addActionListener(new java.awt.event.ActionListener() {
@@ -42,6 +67,7 @@ public class SeeDealerBlockFrame extends javax.swing.JFrame {
                 btnEditDealerBlockActionPerformed(evt);
             }
         });
+        getContentPane().add(btnEditDealerBlock, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 770, -1, 41));
 
         btnExitProject.setText("Thoát xem");
         btnExitProject.addActionListener(new java.awt.event.ActionListener() {
@@ -49,40 +75,56 @@ public class SeeDealerBlockFrame extends javax.swing.JFrame {
                 btnExitProjectActionPerformed(evt);
             }
         });
+        getContentPane().add(btnExitProject, new org.netbeans.lib.awtextra.AbsoluteConstraints(1150, 770, -1, 41));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(851, Short.MAX_VALUE)
-                .addComponent(btnEditDealerBlock)
-                .addGap(33, 33, 33)
-                .addComponent(btnExitProject)
-                .addGap(55, 55, 55))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1074, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 648, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnExitProject)
-                    .addComponent(btnEditDealerBlock))
-                .addGap(24, 24, 24))
-        );
+        jLabel1.setFont(new java.awt.Font("Segoe UI Black", 1, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel1.setText("SÀN GIAO DỊCH");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(516, 32, -1, -1));
+
+        lblTenSanGiaoDich.setFont(new java.awt.Font("Roboto Slab Light", 0, 36)); // NOI18N
+        lblTenSanGiaoDich.setForeground(new java.awt.Color(255, 255, 255));
+        lblTenSanGiaoDich.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/qlbatdongsan/images/icon/dot.png"))); // NOI18N
+        getContentPane().add(lblTenSanGiaoDich, new org.netbeans.lib.awtextra.AbsoluteConstraints(516, 130, 509, -1));
+
+        lblDiaChi.setFont(new java.awt.Font("Roboto Slab Light", 0, 36)); // NOI18N
+        lblDiaChi.setForeground(new java.awt.Color(255, 255, 255));
+        lblDiaChi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/qlbatdongsan/images/icon/dot.png"))); // NOI18N
+        getContentPane().add(lblDiaChi, new org.netbeans.lib.awtextra.AbsoluteConstraints(516, 220, 580, -1));
+
+        lblNVTao.setFont(new java.awt.Font("Roboto Slab Light", 0, 36)); // NOI18N
+        lblNVTao.setForeground(new java.awt.Color(255, 255, 255));
+        lblNVTao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/qlbatdongsan/images/icon/dot.png"))); // NOI18N
+        getContentPane().add(lblNVTao, new org.netbeans.lib.awtextra.AbsoluteConstraints(516, 510, 580, -1));
+
+        lblNgayTao.setFont(new java.awt.Font("Roboto Slab Light", 0, 36)); // NOI18N
+        lblNgayTao.setForeground(new java.awt.Color(255, 255, 255));
+        lblNgayTao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/qlbatdongsan/images/icon/dot.png"))); // NOI18N
+        getContentPane().add(lblNgayTao, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 610, 440, -1));
+
+        lblNVQuanLy.setFont(new java.awt.Font("Roboto Slab Light", 0, 36)); // NOI18N
+        lblNVQuanLy.setForeground(new java.awt.Color(255, 255, 255));
+        lblNVQuanLy.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/qlbatdongsan/images/icon/dot.png"))); // NOI18N
+        getContentPane().add(lblNVQuanLy, new org.netbeans.lib.awtextra.AbsoluteConstraints(516, 310, 560, -1));
+
+        lblSDT.setFont(new java.awt.Font("Roboto Slab Light", 0, 36)); // NOI18N
+        lblSDT.setForeground(new java.awt.Color(255, 255, 255));
+        lblSDT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/qlbatdongsan/images/icon/dot.png"))); // NOI18N
+        getContentPane().add(lblSDT, new org.netbeans.lib.awtextra.AbsoluteConstraints(516, 410, 550, -1));
+
+        lblLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/qlbatdongsan/images/imgAvartar/skye_bloom-black-removebg-preview.png"))); // NOI18N
+        getContentPane().add(lblLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 490, 630));
+
+        lblImage.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        getContentPane().add(lblImage, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -10, 1250, 831));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEditDealerBlockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditDealerBlockActionPerformed
         // TODO add your handling code here:
-
+        EditDealerBlockFrame editBlockFrame =new EditDealerBlockFrame(sgd);
+        editBlockFrame.setVisible(true);
     }//GEN-LAST:event_btnEditDealerBlockActionPerformed
 
     private void btnExitProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitProjectActionPerformed
@@ -131,5 +173,13 @@ public class SeeDealerBlockFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnEditDealerBlock;
     private javax.swing.JButton btnExitProject;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel lblDiaChi;
+    private javax.swing.JLabel lblImage;
+    private javax.swing.JLabel lblLogo;
+    private javax.swing.JLabel lblNVQuanLy;
+    private javax.swing.JLabel lblNVTao;
+    private javax.swing.JLabel lblNgayTao;
+    private javax.swing.JLabel lblSDT;
+    private javax.swing.JLabel lblTenSanGiaoDich;
     // End of variables declaration//GEN-END:variables
 }

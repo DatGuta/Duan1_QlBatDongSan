@@ -4,6 +4,14 @@
  */
 package com.mycompany.qlbatdongsan.ui;
 
+import com.mycompany.qlbatdongsan.DAO.NhanVienDAO;
+import com.mycompany.qlbatdongsan.DAO.SanGiaoDichDAO;
+import com.mycompany.qlbatdongsan.Entity.CongNo;
+import com.mycompany.qlbatdongsan.Entity.NhanVien;
+import com.mycompany.qlbatdongsan.Entity.SanGiaoDich;
+import com.mycompany.qlbatdongsan.utils.Auth;
+import com.mycompany.qlbatdongsan.utils.MsgBox;
+import java.util.List;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -13,7 +21,8 @@ import javax.swing.table.TableRowSorter;
  * @author HO VAN DAT
  */
 public class StaffFrame extends javax.swing.JPanel {
-
+    NhanVienDAO dao = new NhanVienDAO();
+    SanGiaoDichDAO daoSGD = new SanGiaoDichDAO();
     DefaultTableModel model;
 
     /**
@@ -23,6 +32,7 @@ public class StaffFrame extends javax.swing.JPanel {
         initComponents();
         initTableGuiSMS();
         initTableNhanVien();
+        fillToTableNhanVien();
     }
 
     private void initTableNhanVien() {
@@ -40,7 +50,7 @@ public class StaffFrame extends javax.swing.JPanel {
         model.setRowCount(0);
         tblNhanVien.setModel(model);
     }
-
+    
     public static void Search(String str) {
         if (str.length() > 0) {
             if (tblNhanVien!=null) {
@@ -53,7 +63,35 @@ public class StaffFrame extends javax.swing.JPanel {
             }
         }
     }
-
+    public void fillToTableNhanVien(){
+        DefaultTableModel model = (DefaultTableModel) tblNhanVien.getModel();
+        model.setRowCount(0);
+        try {
+            List<NhanVien> list = null;
+            if (Auth.user.getMaNV().equals("NV01")) {
+                 list = dao.selectAll();
+            }else{
+                list = dao.selectBymaQuanLy(Auth.user.getMaNV());
+                    }     
+            for (NhanVien nv : list) {
+                Object[] row = {
+                    nv.getMaNV(),
+                    nv.getHoTen(),
+                    nv.getNgaySinh(),
+                    nv.getSdt(),
+                    nv.getSoNoiBo(),
+                    nv.getChucDanh(),
+                    daoSGD.selectById(nv.getMaSGD())==null?null:daoSGD.selectById(nv.getMaSGD()).getSanGiaoDich(),                   
+                    dao.selectById(nv.getMaQuanLy())==null?null:dao.selectById(nv.getMaQuanLy()).getHoTen(),
+                    nv.getLockCheckBox() 
+                };
+                model.addRow(row);
+            }
+        } catch (Exception e) {
+            MsgBox.alert(this, "Lỗi truy vấn dữ liệu!");
+            e.printStackTrace();
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -68,11 +106,6 @@ public class StaffFrame extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblNhanVien = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton9 = new javax.swing.JButton();
-        jButton10 = new javax.swing.JButton();
-        jButton11 = new javax.swing.JButton();
-        jButton12 = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblGuiSMS = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
@@ -94,10 +127,7 @@ public class StaffFrame extends javax.swing.JPanel {
 
         tblNhanVien.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4"
@@ -106,16 +136,6 @@ public class StaffFrame extends javax.swing.JPanel {
         jScrollPane1.setViewportView(tblNhanVien);
 
         jLabel1.setText("Tạo việc  gữi SMS");
-
-        jButton1.setText("jButton1");
-
-        jButton9.setText("jButton1");
-
-        jButton10.setText("jButton1");
-
-        jButton11.setText("jButton1");
-
-        jButton12.setText("jButton1");
 
         tblGuiSMS.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -138,52 +158,34 @@ public class StaffFrame extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(0, 0, Short.MAX_VALUE))
+                                .addGap(574, 574, 574)
+                                .addComponent(jLabel2))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton9)
-                                .addGap(28, 28, 28)
-                                .addComponent(jButton10)
-                                .addGap(30, 30, 30)
-                                .addComponent(jButton11)
-                                .addGap(27, 27, 27)
-                                .addComponent(jButton12)
-                                .addGap(149, 149, 149))))
+                                .addContainerGap()
+                                .addComponent(jLabel1)))
+                        .addGap(0, 625, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane3)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane1)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING))))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(574, 574, 574)
-                .addComponent(jLabel2)
-                .addContainerGap(631, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
+                .addGap(87, 87, 87)
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton10)
-                    .addComponent(jButton9)
-                    .addComponent(jButton11)
-                    .addComponent(jButton12))
-                .addGap(18, 18, 18)
+                .addGap(30, 30, 30)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -191,11 +193,6 @@ public class StaffFrame extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton12;
-    private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;

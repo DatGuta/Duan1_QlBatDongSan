@@ -4,7 +4,10 @@
  */
 package com.mycompany.qlbatdongsan.ui;
 
+import com.mycompany.qlbatdongsan.DAO.SanPhamDuAnDAO;
+import com.mycompany.qlbatdongsan.Entity.SanPhamDuAn;
 import static com.mycompany.qlbatdongsan.ui.ProjectFrame.fillTableDA;
+import java.util.List;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -14,7 +17,8 @@ import javax.swing.table.TableRowSorter;
  * @author HO VAN DAT
  */
 public class ShowSPDAFrame extends javax.swing.JFrame {
-
+    DefaultTableModel model;
+    static  SanPhamDuAnDAO daoSP = new SanPhamDuAnDAO();
     /**
      * Creates new form ShowSPDA1
      */
@@ -22,7 +26,40 @@ public class ShowSPDAFrame extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        initTableProject();
+        fillToTable();
     }
+    public void initTableProject() {
+        model = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int i, int j) {
+                return false;
+            }
+        };
+        Object[] column = {"Mã sản phẩm dự án","Mã dự án","Tên sản phẩm dự án", "Địa chỉ", "Diện tích", "Số giấy phép", "Ngày cấp", "Nơi cấp", "Loại DA", "Ngày đăng","Trạng thái","NV phụ trách","Mã sàn giao dich"};
+        model.setColumnIdentifiers(column);
+        model.setRowCount(0);
+        tblSPDuAn.setModel(model);
+    }
+    public static void fillToTable(){
+        DefaultTableModel model = (DefaultTableModel) tblSPDuAn.getModel();
+        model.setRowCount(0);
+        try {
+            List<SanPhamDuAn> list = daoSP.selectAll();
+            for (SanPhamDuAn da : list) {
+                Object[] row = {
+                    da.getMaSPDA(),
+                    da.getMaDA(),
+                    
+                };
+                model.addRow(row);
+            }
+        } catch (Exception e) {
+            System.out.println("Lỗi truy vấn dữ liệu!");
+        }
+    }
+    
+    
      public void Search(String str) {
         if (str.length() > 0) {
             if (tblSPDuAn != null) {
@@ -197,7 +234,7 @@ public class ShowSPDAFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private com.mycompany.qlbatdongsan.utils.PanelRound panelRound3;
-    private javax.swing.JTable tblSPDuAn;
+    public static javax.swing.JTable tblSPDuAn;
     private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 }
